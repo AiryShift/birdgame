@@ -4,56 +4,56 @@ import cmath
 class Vector():
     def __init__(self, *, x=1, y=0, arg=None):
         if arg is not None:
-            self.vec = cmath.rect(1, arg)
+            self.vector = cmath.rect(1, arg)
         else:
-            self.vec = complex(x, y)
+            self.vector = complex(x, y)
 
     @property
     def x(self):
-        return self.vec.real
+        return self.vector.real
 
     @x.setter
     def x(self, value):
-        self.vec.real = value
+        self.vector.real = value
 
     @property
     def y(self):
-        return self.vec.imag
+        return self.vector.imag
 
     @y.setter
     def y(self, value):
-        self.vec.imag = value
+        self.vector.imag = value
 
     def __add__(self, other):
         if isinstance(other, Vector):
-            other = other.vec
+            other = other.vector
         elif not (isinstance(other, int) or isinstance(other, float)):
             raise TypeError('Vector does not support {} with type {}'.format(
                 'addition', type(other)))
-        result = self.vec + other
+        result = self.vector + other
         return Vector(x=result.real, y=result.imag)
 
     def __mul__(self, other):
         if isinstance(other, Vector):
-            other = other.vec
+            other = other.vector
         elif not (isinstance(other, int) or isinstance(other, float)):
             raise TypeError('Vector does not support {} with type {}'.format(
                 'multiplication', type(other)))
-        result = self.vec * other
+        result = self.vector * other
         return Vector(x=result.real, y=result.imag)
 
     __rmul__ = __mul__
 
     def __abs__(self):
-        return abs(self.vec)
+        return abs(self.vector)
 
     def __eq__(self, other):
         if isinstance(other, Vector):
-            other = other.vec
+            other = other.vector
         elif not (isinstance(other, int) or isinstance(other, float)):
             raise TypeError('Vector does not support {} with type {}'.format(
                 'equality', type(other)))
-        return self.vec == other
+        return self.vector == other
 
 
 class PhysicalObject():
@@ -73,10 +73,12 @@ class PhysicalObject():
         self.mass = mass
 
     def move(self):
+        """Applies acceleration and velocity vectors to movement"""
         self.velocity += self.acceleration
         self.position += self.velocity
 
     def detect_collision(self, other):
+        """Detects collision with another object using bounding rectangle"""
         my_corner = self.position - (self.size / 2)
         other_corner = other.position - (other.size / 2)
 
