@@ -1,5 +1,4 @@
 import cmath
-import math
 
 
 class Vector():
@@ -58,8 +57,16 @@ class Vector():
 
 
 class PhysicalObject():
-    def __init__(self, position, velocity, acceleration, elasticity, mass):
+    """
+    Base class for all rendered objects
+
+    position defines centre of mass, NOT a corner of its bounding box
+    """
+
+    def __init__(
+            self, position, size, velocity, acceleration, elasticity, mass):
         self.position = position
+        self.size = size
         self.velocity = velocity
         self.acceleration = acceleration
         self.elasticity = elasticity
@@ -68,6 +75,17 @@ class PhysicalObject():
     def move(self):
         self.velocity += self.acceleration
         self.position += self.velocity
+
+    def detect_collision(self, other):
+        my_corner = self.position - (self.size / 2)
+        other_corner = other.position - (other.size / 2)
+
+        x_intersect = abs(my_corner.x - other_corner.x) * 2 <= (
+            self.size.x + other.size.x)
+        y_intersect = abs(my_corner.y - other_corner.y) * 2 <= (
+            self.size.y + other.size.y)
+
+        return x_intersect and y_intersect
 
 if __name__ == '__main__':
     assert(Vector(arg=0) == Vector(x=1, y=0))
