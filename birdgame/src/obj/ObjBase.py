@@ -1,7 +1,7 @@
 import cmath
 
 
-class Vector():
+class Vector:
     def __init__(self, *, x=1, y=0, arg=None):
         if arg is not None:
             self.vector = cmath.rect(1, arg)
@@ -56,7 +56,7 @@ class Vector():
         return self.vector == other
 
 
-class PhysicalObject():
+class PhysicalObject:
     """
     Base class for all rendered objects
 
@@ -88,12 +88,3 @@ class PhysicalObject():
             self.size.y + other.size.y)
 
         return x_intersect and y_intersect
-
-if __name__ == '__main__':
-    assert(Vector(arg=0) == Vector(x=1, y=0))
-    try:
-        Vector(arg=0) + 'a'
-    except TypeError:
-        pass
-    assert(Vector(arg=0) * 2 == Vector(x=2))
-    assert(2 * Vector(arg=0) == Vector(x=2))
