@@ -63,8 +63,8 @@ class PhysicalObject:
     position defines centre of mass, NOT a corner of its bounding box
     """
 
-    def __init__(
-            self, position, size, velocity, acceleration, elasticity, mass):
+    def __init__(self, position, size, velocity, acceleration, elasticity,
+                 mass):
         self.position = position
         self.size = size
         self.velocity = velocity
