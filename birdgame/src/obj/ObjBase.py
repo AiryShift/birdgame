@@ -44,6 +44,18 @@ class Vector:
 
     __rmul__ = __mul__
 
+    def __truediv__(self, other):
+        if isinstance(other, Vector):
+            other = other.vector
+        elif not (isinstance(other, int) or isinstance(other, float)):
+            raise TypeError('Vector does not support {} with type {}'.format(
+                'division', type(other)))
+        result = self.vector / other
+        return Vector(x=result.real, y=result.imag)
+
+    def __sub__(self, other):
+        return self + (-1 * other)
+
     def __abs__(self):
         return abs(self.vector)
 
@@ -54,6 +66,11 @@ class Vector:
             raise TypeError('Vector does not support {} with type {}'.format(
                 'equality', type(other)))
         return self.vector == other
+
+
+class PhysicalError(Exception):
+    def __init__(self, msg):
+        super().__init__(msg)
 
 
 class PhysicalObject:
@@ -73,7 +90,7 @@ class PhysicalObject:
         self.mass = mass
 
     def move(self):
-        """Applies acceleration and velocity vectors to movement"""
+        """Applies acceleration and velocity vectors to displacement"""
         self.velocity += self.acceleration
         self.position += self.velocity
 
