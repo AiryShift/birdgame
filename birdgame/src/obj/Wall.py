@@ -6,4 +6,4 @@ class Wall(ObjBase.PhysicalObject):
         pass
 
     def move(self):
-        raise TypeError('Walls do not move')
+        raise ObjBase.PhysicalError('Walls do not move')
