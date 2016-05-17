@@ -27,18 +27,12 @@ class Vector:
     def __add__(self, other):
         if isinstance(other, Vector):
             other = other.vector
-        elif not (isinstance(other, int) or isinstance(other, float)):
-            raise TypeError('Vector does not support {} with type {}'.format(
-                'addition', type(other)))
         result = self.vector + other
         return Vector(x=result.real, y=result.imag)
 
     def __mul__(self, other):
         if isinstance(other, Vector):
             other = other.vector
-        elif not (isinstance(other, int) or isinstance(other, float)):
-            raise TypeError('Vector does not support {} with type {}'.format(
-                'multiplication', type(other)))
         result = self.vector * other
         return Vector(x=result.real, y=result.imag)
 
@@ -47,9 +41,6 @@ class Vector:
     def __truediv__(self, other):
         if isinstance(other, Vector):
             other = other.vector
-        elif not (isinstance(other, int) or isinstance(other, float)):
-            raise TypeError('Vector does not support {} with type {}'.format(
-                'division', type(other)))
         result = self.vector / other
         return Vector(x=result.real, y=result.imag)
 
@@ -62,9 +53,6 @@ class Vector:
     def __eq__(self, other):
         if isinstance(other, Vector):
             other = other.vector
-        elif not (isinstance(other, int) or isinstance(other, float)):
-            raise TypeError('Vector does not support {} with type {}'.format(
-                'equality', type(other)))
         return self.vector == other
 
 
