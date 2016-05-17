@@ -2,6 +2,7 @@ import unittest
 import src.obj.ObjBase as ObjBase
 from src.obj.ObjBase import Vector
 import src.obj.Wall as Wall
+from math import pi
 
 
 class TestVector(unittest.TestCase):
@@ -11,6 +12,9 @@ class TestVector(unittest.TestCase):
         self.assertEqual(2 * Vector(arg=0), Vector(x=2))
         with self.assertRaises(TypeError):
             Vector(arg=0) + 'a'
+        self.assertEqual(Vector(arg=0) * Vector(arg=pi), Vector(x=-1, y=0))
+        self.assertEqual(Vector(arg=pi / 2), Vector(x=0, y=1))
+        self.assertEqual(Vector(arg=-pi / 2), Vector(x=0, y=-1))
 
 
 class TestPhysicalObject(unittest.TestCase):
