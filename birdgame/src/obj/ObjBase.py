@@ -1,6 +1,11 @@
 import cmath
 
 
+def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
+    """https://docs.python.org/3/library/cmath.html#cmath.isclose"""
+    return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+
+
 class Vector:
     def __init__(self, *, x=1, y=0, arg=None):
         if arg is not None:
@@ -53,7 +58,7 @@ class Vector:
     def __eq__(self, other):
         if isinstance(other, Vector):
             other = other.vector
-        return self.vector == other
+        return isclose(self.vector, other)
 
 
 class PhysicalError(Exception):
