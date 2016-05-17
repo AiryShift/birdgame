@@ -1,5 +1,6 @@
 import unittest
-from src.obj import ObjBase
+import src.obj.ObjBase as ObjBase
+import src.obj.Wall as Wall
 
 
 class TestVector(unittest.TestCase):
@@ -14,6 +15,12 @@ class TestVector(unittest.TestCase):
 class TestPhysicalObject(unittest.TestCase):
     def test_detect_collision(self):
         pass
+
+
+class TestWalls(unittest.TestCase):
+    def test_move(self):
+        with self.assertRaises(TypeError):
+            Wall().move()
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)
