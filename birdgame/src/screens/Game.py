@@ -1,5 +1,5 @@
 from .. import config
 
 
-def run(settings):
+def run(screen, settings):
     return config.EXIT_CODE

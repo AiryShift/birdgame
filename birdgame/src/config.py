@@ -1,6 +1,10 @@
 # Colors
 WHITE = (255, 255, 255)
 
+# Display
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+
 # Different screens
 EXIT_CODE = -1
 MAIN_MENU_CODE = 0
@@ -10,6 +14,8 @@ GAME_CODE = 3
 
 DEFAULT_SCREEN_CODE = MAIN_MENU_CODE
 
+
+# Objects
 BIRD_MASS = 10  # temporary
 BIRD_ELASTICITY = 0
 
