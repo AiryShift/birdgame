@@ -47,7 +47,7 @@ class TestPhysicalObject(unittest.TestCase):
 class TestWalls(unittest.TestCase):
     def test_move(self):
         with self.assertRaises(ObjBase.PhysicalError):
-            Wall.Wall().move()
+            Wall.Wall(Vector(), Vector()).move()
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)
