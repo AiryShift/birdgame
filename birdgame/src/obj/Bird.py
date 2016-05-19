@@ -1,6 +1,7 @@
+from src.Vector import Vector
+from src.config import config
 from . import ObjBase
-from .. import config
-BIRD_SIZE = ObjBase.Vector(x=10, y=10)  # temporary
+BIRD_SIZE = Vector(x=10, y=10)  # temporary
 
 
 class Bird(ObjBase.PhysicalObject):
@@ -11,6 +12,6 @@ class Bird(ObjBase.PhysicalObject):
         super().__init__(position, size, velocity, acceleration, elasticity,
                          mass)
         if orientation is None:
-            self.orientation = ObjBase.Vector(arg=0)
+            self.orientation = Vector(arg=0)
         self.team = team
         self.has_ball = has_ball

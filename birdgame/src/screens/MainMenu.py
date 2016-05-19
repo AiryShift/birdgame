@@ -1,7 +1,7 @@
 import pygame as pg
-from ..obj.Wall import Wall
-from ..obj.ObjBase import Vector
-from .. import config
+from src.obj.Wall import Wall
+from src.Vector import Vector
+from src import config
 
 
 def run(screen, settings):

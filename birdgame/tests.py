@@ -1,9 +1,9 @@
 import unittest
-import src.obj.ObjBase as ObjBase
-from src.obj.ObjBase import Vector
-import src.obj.Wall as Wall
 from math import pi
 import pygame as pg
+from src.Vector import Vector
+import src.obj.ObjBase as ObjBase
+import src.obj.Wall as Wall
 
 
 class TestVector(unittest.TestCase):
