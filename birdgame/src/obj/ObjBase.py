@@ -1,4 +1,5 @@
 import cmath
+import pygame as pg
 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
@@ -75,26 +76,33 @@ class PhysicalObject:
 
     def __init__(self, position, size, velocity, acceleration, elasticity,
                  mass):
-        self.position = position
-        self.size = size
+        self.rect = pg.Rect(0, 0, 0, 0)
+        self.rect.center = (position.x, position.y)
+        self.rect.size = (size.x, size.y)
+
         self.velocity = velocity
         self.acceleration = acceleration
         self.elasticity = elasticity
         self.mass = mass
 
+    @property
+    def x(self):
+        return self.rect.centerx
+
+    @x.setter
+    def x(self, value):
+        self.rect.centerx = value
+
+    @property
+    def y(self):
+        return self.rect.centery
+
+    @y.setter
+    def y(self, value):
+        self.rect.centery = value
+
     def move(self):
         """Applies acceleration and velocity vectors to displacement"""
         self.velocity += self.acceleration
-        self.position += self.velocity
-
-    def detect_collision(self, other):
-        """Detects collision with another object using bounding rectangle"""
-        my_corner = self.position - (self.size / 2)
-        other_corner = other.position - (other.size / 2)
-
-        x_intersect = abs(my_corner.x - other_corner.x) * 2 <= (
-            self.size.x + other.size.x)
-        y_intersect = abs(my_corner.y - other_corner.y) * 2 <= (
-            self.size.y + other.size.y)
-
-        return x_intersect and y_intersect
+        self.x += self.velocity.x
+        self.y += self.velocity.y
