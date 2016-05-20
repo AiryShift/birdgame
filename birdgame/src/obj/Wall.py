@@ -8,7 +8,6 @@ class Wall(pg.sprite.Sprite, ObjBase.PhysicalObject):
         pg.sprite.Sprite.__init__(self)
         ObjBase.PhysicalObject.__init__(self, position, size,
                                         None, None, None, None)
-        self.image = pg.Surface([size.x, size.y])
         self.image.fill(color)
 
     def move(self):

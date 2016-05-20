@@ -15,6 +15,7 @@ class PhysicalObject:
 
     def __init__(self, position, size, velocity, acceleration, elasticity,
                  mass):
+        self.image = pg.Surface([size.x, size.y])
         self.rect = pg.Rect(0, 0, 0, 0)
         self.rect.center = (position.x, position.y)
         self.rect.size = (size.x, size.y)

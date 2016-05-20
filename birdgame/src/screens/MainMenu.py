@@ -1,5 +1,6 @@
 import pygame as pg
 from src.obj.Wall import Wall
+from src.obj.Button import Button
 from src.Vector import Vector
 from src import config
 
@@ -7,7 +8,8 @@ from src import config
 def run(screen, settings):
     clock = pg.time.Clock()
     sprites = pg.sprite.Group()
-    sprites.add(Wall(Vector(x=10, y=10), Vector(x=20, y=20)))
+    sprites.add(Wall(Vector(x=245, y=10), Vector(x=245, y=502)))
+    sprites.add(Button(Vector(), 100, 'i am not happy'))
     quit = False
 
     while not quit:
