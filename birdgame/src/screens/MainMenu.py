@@ -23,7 +23,10 @@ def run(screen, settings):
                                              y=cfg.buttons.CONTROLS_BUTTON_Y),
                              size=cfg.buttons.CONTROLS_BUTTON_SIZE,
                              text='Controls', click=controls_button_click)
-    sprites.add(play_button, controls_button)
+    game_name = Button(position=Vector(x=cfg.buttons.GAME_NAME_X,
+                                       y=cfg.buttons.GAME_NAME_Y),
+                       size=cfg.buttons.GAME_NAME_SIZE, text='Bird Game')
+    sprites.add(play_button, controls_button, game_name)
     quit = False
 
     while not quit:
