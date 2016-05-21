@@ -28,7 +28,7 @@ BALL_ELASTICITY = 5  # temporary
 
 class buttons:
     # MainMenu
-    PLAY_BUTTON_X = 640
+    PLAY_BUTTON_X = SCREEN_WIDTH // 2
     PLAY_BUTTON_Y = 400
     PLAY_BUTTON_SIZE = 120
 
