@@ -24,3 +24,8 @@ BIRD_ELASTICITY = 0
 
 BALL_MASS = 10  # temporary
 BALL_ELASTICITY = 5  # temporary
+
+
+class buttons:
+    MAIN_MENU_X = 670
+    MAIN_MENU_Y = 300

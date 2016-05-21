@@ -46,3 +46,6 @@ class PhysicalObject:
         self.velocity += self.acceleration
         self.x += self.velocity.x
         self.y += self.velocity.y
+
+    def click(self):
+        raise NotImplementedError
