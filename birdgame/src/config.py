@@ -1,4 +1,5 @@
 FPS = 60
+GAME_CAPTION = 'Bird Game, by Julian'
 
 # Colors
 WHITE = (255, 255, 255)
