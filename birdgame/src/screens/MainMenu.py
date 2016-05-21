@@ -1,20 +1,29 @@
 import pygame as pg
 from src.obj.Button import Button
 from src.Vector import Vector
-from src import config
+from src import config as cfg
+
 
 def play_button_click():
-    return config.SELECT_CODE
+    return cfg.SELECT_CODE
+
+
+def controls_button_click():
+    return cfg.CONTROLS_CODE
 
 
 def run(screen, settings):
     clock = pg.time.Clock()
     sprites = pg.sprite.Group()
-    play_button = Button(position=Vector(x=config.buttons.MAIN_MENU_X,
-                                         y=config.buttons.MAIN_MENU_Y),
-                         size=120, text='Play',
+    play_button = Button(position=Vector(x=cfg.buttons.PLAY_BUTTON_X,
+                                         y=cfg.buttons.PLAY_BUTTON_Y),
+                         size=cfg.buttons.PLAY_BUTTON_SIZE, text='Play',
                          click=play_button_click)
-    sprites.add(play_button)
+    controls_button = Button(position=Vector(x=cfg.buttons.CONTROLS_BUTTON_X,
+                                             y=cfg.buttons.CONTROLS_BUTTON_Y),
+                             size=cfg.buttons.CONTROLS_BUTTON_SIZE,
+                             text='Controls', click=controls_button_click)
+    sprites.add(play_button, controls_button)
     quit = False
 
     while not quit:
@@ -31,12 +40,12 @@ def run(screen, settings):
                     except NotImplementedError:
                         pass
 
-        screen.fill(config.BLACK)
+        screen.fill(cfg.BLACK)
         sprites.draw(screen)
         pg.display.update()
-        clock.tick(config.FPS)
+        clock.tick(cfg.FPS)
 
-    return config.EXIT_CODE
+    return cfg.EXIT_CODE
 
 
 if __name__ == '__main__':
