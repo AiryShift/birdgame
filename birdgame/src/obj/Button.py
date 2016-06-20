@@ -18,3 +18,18 @@ class Button(pg.sprite.Sprite, ObjBase.PhysicalObject):
         self.rect.center = (position.x, position.y)
         if click is not None:
             self.click = click
+
+class KeymapButton(Button):
+    def __init__(self, position, size, modifies, settings, *,
+                 text_colour=cfg.WHITE, bg_colour=cfg.BLACK):
+        super().__init__(position, size,
+            self.settings[cfg.PYGAME_KEYMAPPING[modifies]])
+
+    def click(self):
+        while True:
+            for event in pg.event.get():
+                if event.type in cfg.PYGAME_KEYMAPPING:
+                    self.settings[modifies] = event.type
+                    self.text = cfg.PYGAME_KEYMAPPING[event.type]
+                    return
+
