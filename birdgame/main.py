@@ -11,7 +11,7 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--debug',
                         type=int,
                         default=0,
-                        help='tarts game on screen with specified screen code')
+                        help='Starts game on screen with specified code')
     args = parser.parse_args()
     cfg.DEFAULT_SCREEN_CODE = args.debug
 
