@@ -1,5 +1,55 @@
+import pygame as pg
 FPS = 60
 GAME_CAPTION = 'Bird Game, by Julian'
+
+# Controls
+PYGAME_KEYMAPPING = {
+    pg.K_a: 'a',
+    pg.K_b: 'b',
+    pg.K_c: 'c',
+    pg.K_d: 'd',
+    pg.K_e: 'e',
+    pg.K_f: 'f',
+    pg.K_g: 'g',
+    pg.K_h: 'h',
+    pg.K_i: 'i',
+    pg.K_j: 'j',
+    pg.K_k: 'k',
+    pg.K_l: 'l',
+    pg.K_m: 'm',
+    pg.K_n: 'n',
+    pg.K_o: 'o',
+    pg.K_p: 'p',
+    pg.K_q: 'q',
+    pg.K_r: 'r',
+    pg.K_s: 's',
+    pg.K_t: 't',
+    pg.K_u: 'u',
+    pg.K_v: 'v',
+    pg.K_w: 'w',
+    pg.K_x: 'x',
+    pg.K_y: 'y',
+    pg.K_z: 'z',
+    pg.K_UP: 'up arrow',
+    pg.K_DOWN: 'down arrow',
+    pg.K_RIGHT: 'right arrow',
+    pg.K_LEFT: 'left arrow',
+    pg.K_COMMA: ',',
+    pg.K_PERIOD: '.',
+    pg.K_SLASH: '/',
+}
+
+DEFAULT_SETTINGS = {
+    'P1_LEFT': pg.K_LEFT,
+    'P1_RIGHT': pg.K_RIGHT,
+    'P1_ACCEL': pg.K_SLASH,
+    'P1_THROW': pg.K_PERIOD,
+
+    'P2_LEFT': pg.K_a,
+    'P2_RIGHT': pg.K_d,
+    'P2_ACCEL': pg.K_e,
+    'P2_THROW': pg.K_r,
+}
 
 # Colors
 WHITE = (255, 255, 255)
