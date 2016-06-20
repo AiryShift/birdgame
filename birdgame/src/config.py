@@ -40,6 +40,7 @@ PYGAME_KEYMAPPING = {
 }
 
 DEFAULT_SETTINGS = {
+    'KEYMAP_CLICKED': False,  # used in Controls scren
     'P1_LEFT': pg.K_LEFT,
     'P1_RIGHT': pg.K_RIGHT,
     'P1_ACCEL': pg.K_SLASH,
@@ -90,3 +91,14 @@ class buttons:
     GAME_NAME_X = PLAY_BUTTON_X
     GAME_NAME_Y = PLAY_BUTTON_Y - 170
     GAME_NAME_SIZE = 250
+
+    # Controls
+    BACK_BUTTON_X = SCREEN_WIDTH // 2
+    BACK_BUTTON_Y = 650
+    BACK_BUTTON_SIZE = 100
+
+    CONTROLS_MENU_STD_SIZE = 60
+    CONTROLS_TOP_LEFT_X = 150
+    CONTROLS_TOP_LEFT_Y = 50
+
+    KEYMAP_OFFSET = 40
