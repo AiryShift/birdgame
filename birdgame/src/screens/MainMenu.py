@@ -4,25 +4,17 @@ from src.Vector import Vector
 from src import config as cfg
 
 
-def play_button_click():
-    return cfg.SELECT_CODE
-
-
-def controls_button_click():
-    return cfg.CONTROLS_CODE
-
-
 def run(screen, settings):
     clock = pg.time.Clock()
     sprites = pg.sprite.Group()
     play_button = Button(position=Vector(x=cfg.buttons.PLAY_BUTTON_X,
                                          y=cfg.buttons.PLAY_BUTTON_Y),
                          size=cfg.buttons.PLAY_BUTTON_SIZE, text='Play',
-                         click=play_button_click)
+                         click=lambda: cfg.SELECT_CODE)
     controls_button = Button(position=Vector(x=cfg.buttons.CONTROLS_BUTTON_X,
                                              y=cfg.buttons.CONTROLS_BUTTON_Y),
                              size=cfg.buttons.CONTROLS_BUTTON_SIZE,
-                             text='Controls', click=controls_button_click)
+                             text='Controls', click=lambda: cfg.CONTROLS_CODE)
     game_name = Button(position=Vector(x=cfg.buttons.GAME_NAME_X,
                                        y=cfg.buttons.GAME_NAME_Y),
                        size=cfg.buttons.GAME_NAME_SIZE, text='Bird Game')
