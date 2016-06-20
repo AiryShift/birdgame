@@ -1,5 +1,5 @@
 from . import ObjBase
-from src import cfg as cfg
+from src import config as cfg
 import pygame as pg
 
 
