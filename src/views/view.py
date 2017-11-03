@@ -1,5 +1,4 @@
 import abc
-import color_constants
 import pygame as pg
 
 
@@ -43,7 +42,7 @@ class AbstractView(metaclass=abc.ABCMeta):
             return True
 
     def _update_screen(self):
-        self.screen.fill(color_constants.BLACK)
+        self.screen.fill(config['BLACK'])
         self.sprites.draw(self.screen)
         pg.display.update()
 

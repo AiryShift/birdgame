@@ -1,3 +1,5 @@
 import pygame as pg
 
-BLACK = pg.Color(0, 0, 0, 0)
+
+def init_colors(config):
+    config['BLACK'] = pg.Color(0, 0, 0, 0)
