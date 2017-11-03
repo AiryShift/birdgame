@@ -48,7 +48,7 @@ class AbstractView(metaclass=abc.ABCMeta):
             self._flip_fullscreen()
 
     def _update_screen(self):
-        self.screen.fill(config['BLACK'])
+        self.screen.fill(self.config['BLACK'])
         self.sprites.draw(self.screen)
         pg.display.update()
 
@@ -60,4 +60,4 @@ class AbstractView(metaclass=abc.ABCMeta):
             pg.display.set_mode(self.config['size'], pg.FULLSCREEN)
 
     def _wait(self):
-        self.clock.tick(config['fps'])
+        self.clock.tick(self.config['fps'])
