@@ -3,7 +3,7 @@ import color_constants
 import pygame as pg
 
 
-class AbstractScreen(metaclass=abc.ABCMeta):
+class AbstractView(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def __init__(self, config, screen, clock, sprites):
         self.config = config
