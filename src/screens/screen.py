@@ -11,17 +11,25 @@ class AbstractScreen(metaclass=abc.ABCMeta):
         self.clock = clock
         self.sprites = sprites
 
+    @abc.abstractmethod
+    def _reset(self):
+        """
+        Resets properties between screen changes
+        """
+        pass
+
     def render(self):
+        self._reset()
         rendering = True
         while rendering:
             for event in pg.event.get():
                 if rendering:
-                    rendering = handle_event(event)
-            self.update_screen()
-            self.wait()
+                    rendering = self._handle_event(event)
+            self._update_screen()
+            self._wait()
 
     @abc.abstractmethod
-    def handle_event(self, event):
+    def _handle_event(self, event):
         """
         Handles pygame events for this screen
 
@@ -31,20 +39,20 @@ class AbstractScreen(metaclass=abc.ABCMeta):
             exit()
         elif event.type == pg.KEYDOWN and event.key == pg.K_F11:
             # hardcoded to the F11 key
-            self.flip_fullscreen()
+            self._flip_fullscreen()
             return True
 
-    def update_screen(self):
+    def _update_screen(self):
         self.screen.fill(color_constants.BLACK)
         self.sprites.draw(self.screen)
         pg.display.update()
 
-    def flip_fullscreen(self):
+    def _flip_fullscreen(self):
         # flips full-screened-ness on or off
         if self.screen.get_flags() & pg.FULLSCREEN:
             pg.display.set_mode(self.config['size'])
         else:
             pg.display.set_mode(self.config['size'], pg.FULLSCREEN)
 
-    def wait(self):
+    def _wait(self):
         self.clock.tick(config['fps'])
