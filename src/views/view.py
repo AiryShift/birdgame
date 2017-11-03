@@ -4,7 +4,8 @@ import pygame as pg
 
 class AbstractView(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def __init__(self, config, screen, clock, sprites):
+    def __init__(self, name, config, screen, clock, sprites):
+        self.name = name
         self.config = config
         self.screen = screen
         self.clock = clock
