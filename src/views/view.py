@@ -19,28 +19,33 @@ class AbstractView(metaclass=abc.ABCMeta):
         pass
 
     def render(self):
+        """
+        Renders the view
+
+        :returns: view name to transition to
+        """
         self._reset()
-        rendering = True
-        while rendering:
+        transition = None
+        while not transition:
             for event in pg.event.get():
-                if rendering:
-                    rendering = self._handle_event(event)
+                if not transition:
+                    transition = self._handle_event(event)
             self._update_screen()
             self._wait()
+        return transition
 
     @abc.abstractmethod
     def _handle_event(self, event):
         """
         Handles pygame events for this screen
 
-        :returns: True/False for continued rendering
+        :returns: view name to transition to, otherwise None
         """
         if event.type == pg.QUIT:
             exit()
-        elif event.type == pg.KEYDOWN and event.key == pg.K_F11:
+        if event.type == pg.KEYDOWN and event.key == pg.K_F11:
             # hardcoded to the F11 key
             self._flip_fullscreen()
-            return True
 
     def _update_screen(self):
         self.screen.fill(config['BLACK'])
