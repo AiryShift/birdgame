@@ -21,7 +21,7 @@ class GameView(AbstractView):
             self.b1.turn(Rotation.ANTICLOCKWISE)
         if pressed[pg.K_d]:
             self.b1.turn(Rotation.CLOCKWISE)
-        if pressed[pg.K_LSHIFT]:
+        if pressed[pg.K_f]:
             self.b1.move()
 
         return super()._handle_keypresses(pressed)
