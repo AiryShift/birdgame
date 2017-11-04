@@ -48,7 +48,7 @@ class AbstractView(metaclass=abc.ABCMeta):
             self._flip_fullscreen()
 
     def _update_screen(self):
-        self.screen.fill(self.config['BLACK'])
+        self.screen.fill(pg.Color('BLACK'))
         self.sprites.draw(self.screen)
         pg.display.update()
 

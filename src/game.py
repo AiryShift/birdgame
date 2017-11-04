@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 from controller import Controller
-import color_constants
 import json
 import pygame as pg
 
@@ -9,7 +8,6 @@ import pygame as pg
 if __name__ == '__main__':
     with open('config.json') as json_file:
         config = json.loads(json_file.read())
-    color_constants.init_colors(config)
 
     pg.init()
     screen = pg.display.set_mode(
