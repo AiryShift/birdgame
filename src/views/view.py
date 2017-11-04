@@ -41,7 +41,7 @@ class AbstractView(metaclass=abc.ABCMeta):
 
         :returns: view name to transition to, otherwise None
         """
-        if event.type == pg.QUIT:
+        if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
             exit()
         if event.type == pg.KEYDOWN and event.key == pg.K_F11:
             # hardcoded to the F11 key
