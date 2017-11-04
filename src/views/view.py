@@ -42,9 +42,10 @@ class AbstractView(metaclass=abc.ABCMeta):
         :returns: view name to transition to, otherwise None
         """
         if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
+            # pressing the 'X' button or ESC quits the game
             exit()
         if event.type == pg.KEYDOWN and event.key == pg.K_F11:
-            # hardcoded to the F11 key
+            # pressing F11 flips the state of fullscreen
             self._flip_fullscreen()
 
     def _update_screen(self):
