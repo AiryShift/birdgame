@@ -21,10 +21,10 @@ class GameView(AbstractView):
             self.b1.turn(Rotation.CLOCKWISE)
         if pressed[pg.K_f]:
             # negative of orientation because rotate goes clockwise
-            self.b1.acceleration = Vector2(0.5, 0).rotate(-self.b1.orientation)
+            self.b1.acceleration = Vector2(self.config['accel'], 0).rotate(-self.b1.orientation)
         else:
             # gravity
-            self.b1.acceleration = Vector2(0, 0.5)
+            self.b1.acceleration = Vector2(0, self.config['accel'])
 
         return super()._handle_keypresses(pressed)
 
