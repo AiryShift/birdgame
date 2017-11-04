@@ -29,6 +29,9 @@ class AbstractPhysicsSprite(AbstractSprite, metaclass=abc.ABCMeta):
 
     def move(self):
         self.velocity += self.acceleration
+        # sets a max speed
+        if self.velocity.length() > self.config['speed']:
+            self.velocity *= self.config['speed'] / self.velocity.length()
         self._position.x += self.velocity.x
         self._position.y += self.velocity.y
 

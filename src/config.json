@@ -1,5 +1,6 @@
 {
 	"size": [1920, 1080],
 	"title": "Bird Game",
-	"fps": 60
+	"fps": 60,
+	"speed": 8
 }
