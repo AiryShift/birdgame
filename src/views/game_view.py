@@ -24,6 +24,8 @@ class GameView(AbstractView):
             self.b1.velocity = Vector2(3, 0).rotate(-self.b1.orientation)
         else:
             self.b1.velocity = Vector2(0, 0)
-        self.b1.move()
 
         return super()._handle_keypresses(pressed)
+
+    def _handle_bookeeping(self):
+        self.b1.move()
