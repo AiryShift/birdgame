@@ -14,9 +14,6 @@ class GameView(AbstractView):
     def _reset(self):
         self.b1.center = self.screen.get_rect().center
 
-    def _handle_event(self, event):
-        super()._handle_event(event)
-
     def _handle_keypresses(self, pressed):
         if pressed[pg.K_a]:
             self.b1.turn(Rotation.ANTICLOCKWISE)

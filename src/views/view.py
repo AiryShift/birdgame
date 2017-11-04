@@ -33,7 +33,6 @@ class AbstractView(metaclass=abc.ABCMeta):
             self._wait()
         return transition
 
-    @abc.abstractmethod
     def _handle_event(self, event):
         """
         Handles pygame events for this screen that aren't KEYDOWNs
