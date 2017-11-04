@@ -16,7 +16,6 @@ class AbstractView(metaclass=abc.ABCMeta):
         """
         Resets properties between screen changes
         """
-        pass
 
     def render(self):
         """
@@ -28,10 +27,8 @@ class AbstractView(metaclass=abc.ABCMeta):
         transition = None
         while not transition:
             for event in pg.event.get():
-                if not transition and event.type != pg.KEYDOWN:
-                    transition = self._handle_event(event)
-            if not transition:
-                transition = self._handle_keypresses(pg.key.get_pressed())
+                transition = transition or self._handle_event(event)
+            transition = transition or self._handle_keypresses(pg.key.get_pressed())
             self._update_screen()
             self._wait()
         return transition
@@ -39,7 +36,7 @@ class AbstractView(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def _handle_event(self, event):
         """
-        Handles pygame events for this screen
+        Handles pygame events for this screen that aren't KEYDOWNs
 
         E.g. mousedown
         :returns: view name to transition to, otherwise None
