@@ -1,5 +1,5 @@
 import pygame as pg
-from sprites.bird import Bird
+from sprites.bird import Bird, Rotation
 from views.view import AbstractView
 
 
@@ -14,4 +14,9 @@ class GameView(AbstractView):
         self.b1.rect.center = self.screen.get_rect().center
 
     def _handle_event(self, event):
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_a:
+                self.b1.turn(Rotation.ANTICLOCKWISE)
+            elif event.key == pg.K_d:
+                self.b1.turn(Rotation.CLOCKWISE)
         return super()._handle_event(event)

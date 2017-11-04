@@ -10,9 +10,12 @@ class Rotation(enum.Enum):
 
 class Bird(AbstractPhysicsSprite):
     def __init__(self, config):
-        image = pg.Surface([10, 10])
+        image = pg.Surface([20, 20], pg.SRCALPHA)
         image.fill(pg.Color('RED'))
         super().__init__(config, image)
+
+        # used for rotations
+        self.original_image = self.image
 
         # orientation in degrees, 0 east, positive anticlockwise
         self.orientation = 0
@@ -25,14 +28,17 @@ class Bird(AbstractPhysicsSprite):
             self.orientation -= 5  # FIXME: better value
         else:
             self.orientation += 5  # FIXME: better value
-        self.orientation = Bird._normalise_orientation(orientation)
+        self._normalise_orientation()
 
-    @staticmethod
-    def _normalise_orientation(orientation):
-        if orientation > 0:
-            while orientation > 360:
-                orientation -= 360
-        elif orientation < 0:
-            while orientation < 0:
-                orientation += 360
-        return orientation
+        self.image = pg.transform.rotate(self.original_image, self.orientation)
+        # center needs to be readjusted to maintain original position
+        self.rect = self.image.get_rect(center=self.rect.center)
+
+    def _normalise_orientation(self):
+        if self.orientation > 0:
+            while self.orientation > 360:
+                self.orientation -= 360
+        elif self.orientation < 0:
+            while self.orientation < 0:
+                self.orientation += 360
+        return self.orientation
