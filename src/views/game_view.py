@@ -17,6 +17,9 @@ class GameView(AbstractView):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_a:
                 self.b1.turn(Rotation.ANTICLOCKWISE)
-            elif event.key == pg.K_d:
+            if event.key == pg.K_d:
                 self.b1.turn(Rotation.CLOCKWISE)
+            if event.key == pg.K_LSHIFT:
+                self.b1.move()
+
         return super()._handle_event(event)

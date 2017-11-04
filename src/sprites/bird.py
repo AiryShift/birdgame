@@ -21,7 +21,9 @@ class Bird(AbstractPhysicsSprite):
         self.orientation = 0
 
     def move(self):
+        self.velocity = pg.math.Vector2(2, 0).rotate(self.orientation)
         super().move()
+        self.velocity = pg.math.Vector2(0, 0)
 
     def turn(self, rotation):
         if rotation is Rotation.CLOCKWISE:

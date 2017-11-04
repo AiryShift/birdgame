@@ -26,3 +26,5 @@ class AbstractPhysicsSprite(AbstractSprite, metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def move(self):
         self.velocity += self.acceleration
+        self.rect.centerx += self.velocity.x
+        self.rect.centery += self.velocity.y
