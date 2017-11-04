@@ -28,8 +28,10 @@ class AbstractView(metaclass=abc.ABCMeta):
         transition = None
         while not transition:
             for event in pg.event.get():
-                if not transition:
+                if not transition and event.type != pg.KEYDOWN:
                     transition = self._handle_event(event)
+            if not transition:
+                transition = self._handle_keypresses(pg.key.get_pressed())
             self._update_screen()
             self._wait()
         return transition
@@ -39,13 +41,24 @@ class AbstractView(metaclass=abc.ABCMeta):
         """
         Handles pygame events for this screen
 
+        E.g. mousedown
         :returns: view name to transition to, otherwise None
         """
-        if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-            # pressing the 'X' button or ESC quits the game
+        if event.type == pg.QUIT:
+            # pressing the 'X' button quits the game
             exit()
-        if event.type == pg.KEYDOWN and event.key == pg.K_F11:
-            # pressing F11 flips the state of fullscreen
+
+    @abc.abstractmethod
+    def _handle_keypresses(self, pressed):
+        """
+        Handles keypresses for this screen
+
+        :returns: view name to transition to, otherwise None
+        """
+        if pressed[pg.K_ESCAPE]:
+            # pressing the ESC button quits the game
+            exit()
+        if pressed[pg.K_F11]:
             self._flip_fullscreen()
 
     def _update_screen(self):
