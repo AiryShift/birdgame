@@ -11,7 +11,7 @@ class GameView(AbstractView):
         super().__init__('game', config, screen, clock, sprites)
 
     def _reset(self):
-        self.b1.rect.center = self.screen.get_rect().center
+        self.b1.center = self.screen.get_rect().center
 
     def _handle_event(self, event):
         super()._handle_event(event)

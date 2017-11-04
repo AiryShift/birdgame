@@ -34,8 +34,8 @@ class Bird(AbstractPhysicsSprite):
         self._normalise_orientation()
 
         self.image = pg.transform.rotate(self.original_image, self.orientation)
-        # center needs to be readjusted to maintain original position
-        self.rect = self.image.get_rect(center=self.rect.center)
+        # rect needs to be readjusted to maintain original position
+        self.rect = self.image.get_rect(center=self._rect.center)
 
     def _normalise_orientation(self):
         if self.orientation > 0:
