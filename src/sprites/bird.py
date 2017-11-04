@@ -20,12 +20,6 @@ class Bird(AbstractPhysicsSprite):
         # orientation in degrees, 0 east, positive anticlockwise
         self.orientation = 0
 
-    def move(self):
-        # negative of orientation because it rotates clockwise
-        self.velocity = pg.math.Vector2(3, 0).rotate(-self.orientation)
-        super().move()
-        self.velocity = pg.math.Vector2(0, 0)
-
     def turn(self, rotation):
         if rotation is Rotation.CLOCKWISE:
             self.orientation -= 5  # FIXME: better value

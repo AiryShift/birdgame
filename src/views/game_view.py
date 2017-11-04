@@ -1,4 +1,5 @@
 import pygame as pg
+from pygame.math import Vector2
 from sprites.bird import Bird, Rotation
 from views.view import AbstractView
 
@@ -22,6 +23,10 @@ class GameView(AbstractView):
         if pressed[pg.K_d]:
             self.b1.turn(Rotation.CLOCKWISE)
         if pressed[pg.K_f]:
-            self.b1.move()
+            # negative of orientation because rotate goes clockwise
+            self.b1.velocity = Vector2(3, 0).rotate(-self.b1.orientation)
+        else:
+            self.b1.velocity = Vector2(0, 0)
+        self.b1.move()
 
         return super()._handle_keypresses(pressed)

@@ -1,5 +1,6 @@
 import abc
 import pygame as pg
+from pygame.math import Vector2
 
 
 class AbstractSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
@@ -20,13 +21,12 @@ class AbstractPhysicsSprite(AbstractSprite, metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def __init__(self, config, image):
         super().__init__(config, image)
-        self.velocity = pg.math.Vector2(0, 0)
-        self.acceleration = pg.math.Vector2(0, 0)
+        self.velocity = Vector2(0, 0)
+        self.acceleration = Vector2(0, 0)
         # interact with this position vector instead of rect for accuracy
         self._rect = self.image.get_rect()
-        self._position = pg.math.Vector2(self._rect.x, self._rect.y)
+        self._position = Vector2(self._rect.x, self._rect.y)
 
-    @abc.abstractmethod
     def move(self):
         self.velocity += self.acceleration
         self._position.x += self.velocity.x
