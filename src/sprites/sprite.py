@@ -10,19 +10,22 @@ class AbstractSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
         Initialises a sprite
 
         Must call this before any other initialisation
-        Sprite has to initialise its own rect
         """
         super().__init__()
         self.config = config
         self.image = image
+        self.rect = self.image.get_rect()
 
 
-class AbstractPhysicsSprite(AbstractSprite, metaclass=abc.ABCMeta):
+class AbstractPhysicsSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def __init__(self, config, image):
-        super().__init__(config, image)
+        super().__init__()
+        self.config = config
+        self.image = image
         self.velocity = Vector2(0, 0)
         self.acceleration = Vector2(0, 0)
+
         # interact with this position vector instead of rect for accuracy
         self._rect = self.image.get_rect()
         self._position = Vector2(self._rect.x, self._rect.y)
