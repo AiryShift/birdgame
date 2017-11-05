@@ -32,14 +32,7 @@ class AbstractPhysicsSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
 
     def move(self):
         self.velocity += self.acceleration
-
-        # sets a max speed, prevents unreasonable acceleration
-        velocity_length = self.velocity.length()
-        if velocity_length > self.config['speed']:
-            self.velocity *= self.config['speed'] / velocity_length
-
-        self._position.x += self.velocity.x
-        self._position.y += self.velocity.y
+        self._position += self.velocity
 
     @property
     def position(self):
