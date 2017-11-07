@@ -43,6 +43,6 @@ class GameView(AbstractView):
 
         return super()._handle_keypresses(pressed)
 
-    def _handle_bookeeping(self):
+    def _handle_bookkeeping(self):
         self.b1.move()
         self.b1.keep_inside(self.screen_rect)
