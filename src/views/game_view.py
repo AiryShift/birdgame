@@ -15,7 +15,7 @@ class GameView(AbstractView):
         super().__init__('game', config, screen, clock, sprites)
 
     def _reset(self):
-        self.b1.center = self.screen.get_rect().center
+        self.b1.center = self.screen_rect.center
 
     def _handle_keypresses(self, pressed):
         if pressed[pg.K_a]:
@@ -42,3 +42,4 @@ class GameView(AbstractView):
 
     def _handle_bookeeping(self):
         self.b1.move()
+        self.b1.keep_inside(self.screen_rect)

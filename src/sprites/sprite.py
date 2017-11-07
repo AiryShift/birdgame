@@ -34,6 +34,10 @@ class AbstractPhysicsSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
         self.velocity += self.acceleration
         self._position += self.velocity
 
+    def keep_inside(self, containing_rect):
+        # cannot clamp in place because rect is virtual
+        self.rect = self.rect.clamp(containing_rect)
+
     @property
     def position(self):
         """

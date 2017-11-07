@@ -8,6 +8,8 @@ class AbstractView(metaclass=abc.ABCMeta):
         self.name = name
         self.config = config
         self.screen = screen
+        # assumes the screen's dimensions will not change
+        self.screen_rect = self.screen.get_rect()
         self.clock = clock
         self.sprites = sprites
 
