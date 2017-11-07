@@ -31,7 +31,7 @@ class AbstractView(metaclass=abc.ABCMeta):
             for event in pg.event.get():
                 transition = transition or self._handle_event(event)
             transition = transition or self._handle_keypresses(pg.key.get_pressed())
-            self._handle_bookeeping()
+            transition = transition or self._handle_bookeeping()
             self._update_screen()
             self._wait()
         return transition
@@ -60,9 +60,12 @@ class AbstractView(metaclass=abc.ABCMeta):
         if pressed[pg.K_F11]:
             self._flip_fullscreen()
 
+    @abc.abstractmethod
     def _handle_bookeeping(self):
         """
         Handles general things once per render cycle
+
+        :returns: view name to transition to, otherwise None
         """
 
     def _update_screen(self):
