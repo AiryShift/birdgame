@@ -3,5 +3,7 @@
 	"title": "Bird Game",
 	"fps": 60,
 	"speed": 12,
-	"accel": 0.5
+	"accel": 0.5,
+	"bird_size": 20,
+	"ball_size": 20
 }
