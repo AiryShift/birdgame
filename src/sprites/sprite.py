@@ -3,7 +3,7 @@ import pygame as pg
 from pygame.math import Vector2
 
 
-class AbstractSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
+class AbstractStaticSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def __init__(self, config, image):
         """
@@ -41,6 +41,18 @@ class AbstractPhysicsSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
         if not containing_rect.contains(self.rect):
             self.rect = self.rect.clamp(containing_rect)
             self._contained = True
+
+    def was_contained(self):
+        """
+        Returns whether there was a successful call to keep_inside
+
+        Failed calls to keep_inside do not invalidate containment
+        until it is called again
+        """
+        if self._contained:
+            self._contained = False
+            return True
+        return False
 
     @property
     def position(self):
@@ -95,13 +107,3 @@ class AbstractPhysicsSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
         self._rect.center = value
         self._position.x = self._rect.x
         self._position.y = self._rect.y
-
-    @property
-    def was_contained(self):
-        """
-        Returns whether there was a successful call to keep_inside
-        """
-        if self._contained:
-            self._contained = False
-            return True
-        return False

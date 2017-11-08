@@ -56,8 +56,8 @@ class GameView(AbstractView):
 
         # movement for the ball
         # bounce
-        if self.ball.was_contained:
-            THRESHOLD = 100  # FIXME: better way
+        if self.ball.was_contained():
+            THRESHOLD = 50  # FIXME: better way
             # checking distance from walls to determine which it bounced off
 
             # left or right
