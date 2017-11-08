@@ -35,9 +35,8 @@ class GameView(AbstractView):
             self.b1.velocity = Vector2(self.config['speed'], 0).rotate(-self.b1.orientation)
             self.b1.acceleration = Vector2(0, 0)
         else:
-            # gravity, max velocity is capped
-            if self.b1.velocity.y < 2 * self.config['speed']:
-                self.b1.acceleration = Vector2(0, self.config['accel'])
+            # gravity
+            self.b1.acceleration = Vector2(0, self.config['accel'])
             # drag
             self.b1.acceleration += -DRAG_COEFFICIENT * self.b1.velocity
 
