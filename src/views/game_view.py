@@ -15,6 +15,10 @@ class GameView(AbstractView):
         self.ball = Ball(config)
         sprites.add(self.b1, self.ball)
         super().__init__('game', config, screen, clock, sprites)
+        self._init_constants()
+
+    def _init_constants(self):
+        self.acceleration_from_gravity = Vector2(0, self.config['accel'])
 
     def _reset(self):
         self.b1.center = self.screen_rect.center
@@ -36,7 +40,7 @@ class GameView(AbstractView):
             self.b1.acceleration = Vector2(0, 0)
         else:
             # gravity
-            self.b1.acceleration = Vector2(0, self.config['accel'])
+            self.b1.acceleration = Vector2(self.acceleration_from_gravity)
             # drag
             self.b1.acceleration += -DRAG_COEFFICIENT * self.b1.velocity
 
