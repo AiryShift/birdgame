@@ -23,6 +23,8 @@ class GameView(AbstractView):
     def _reset(self):
         self.b1.center = self.screen_rect.center
         self.ball.center = self.screen_rect.center
+        self.ball.acceleration = Vector2(self.acceleration_from_gravity)
+        self.ball.velocity = Vector2(5, 0)  # FIXME: temp for testing
 
     def _handle_keypresses(self, pressed):
         if pressed[pg.K_a]:
@@ -47,5 +49,24 @@ class GameView(AbstractView):
         return super()._handle_keypresses(pressed)
 
     def _handle_bookkeeping(self):
+        # movement for birds
         self.b1.move()
         self.b1.keep_inside(self.screen_rect)
+
+
+        # movement for the ball
+        # bounce
+        if self.ball.was_contained:
+            THRESHOLD = 100  # FIXME: better way
+            # checking distance from walls to determine which it bounced off
+
+            # left or right
+            if self.ball.rect.x < THRESHOLD or self.ball.rect.x > self.screen_rect.width - THRESHOLD:
+                self.ball.velocity.x *= -1
+            # top or bottom
+            if self.ball.rect.y < THRESHOLD or self.ball.rect.y > self.screen_rect.height - THRESHOLD:
+                self.ball.velocity.y *= -1
+        # drag
+        self.ball.acceleration = Vector2(self.acceleration_from_gravity) + -DRAG_COEFFICIENT * self.ball.velocity
+        self.ball.move()
+        self.ball.keep_inside(self.screen_rect)
