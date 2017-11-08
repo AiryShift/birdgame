@@ -30,13 +30,17 @@ class AbstractPhysicsSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
         self._rect = self.image.get_rect()
         self._position = Vector2(self._rect.x, self._rect.y)
 
+        self._contained = False
+
     def move(self):
         self.velocity += self.acceleration
         self._position += self.velocity
 
     def keep_inside(self, containing_rect):
         # cannot clamp in place because rect is virtual
-        self.rect = self.rect.clamp(containing_rect)
+        if not containing_rect.contains(self.rect):
+            self.rect = self.rect.clamp(containing_rect)
+            self._contained = True
 
     @property
     def position(self):
@@ -91,3 +95,13 @@ class AbstractPhysicsSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
         self._rect.center = value
         self._position.x = self._rect.x
         self._position.y = self._rect.y
+
+    @property
+    def was_contained(self):
+        """
+        Returns whether there was a successful call to keep_inside
+        """
+        if self._contained:
+            self._contained = False
+            return True
+        return False
