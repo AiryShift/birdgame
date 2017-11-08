@@ -13,7 +13,6 @@ class AbstractView(metaclass=abc.ABCMeta):
         self.clock = clock
         self.sprites = sprites
 
-    @abc.abstractmethod
     def _reset(self):
         """
         Resets properties between screen changes
@@ -47,7 +46,6 @@ class AbstractView(metaclass=abc.ABCMeta):
             # pressing the 'X' button quits the game
             exit()
 
-    @abc.abstractmethod
     def _handle_keypresses(self, pressed):
         """
         Handles keypresses for this screen
@@ -60,7 +58,6 @@ class AbstractView(metaclass=abc.ABCMeta):
         if pressed[pg.K_F11]:
             self._flip_fullscreen()
 
-    @abc.abstractmethod
     def _handle_bookkeeping(self):
         """
         Handles general things once per render cycle
