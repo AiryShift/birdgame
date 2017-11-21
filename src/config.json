@@ -6,8 +6,10 @@
 	"accel": 0.25,
 	"bird_size": 20,
 	"ball_size": 20,
-	"drag": 0.03,
+	"bird_drag": 0.03,
+	"ball_drag": 0.015,
 	"boost_slowdown": 4,
 	"boost_speed": 20,
-	"boost_time_required": 60
+	"boost_time_required": 60,
+	"ball_launch_speed": 50
 }

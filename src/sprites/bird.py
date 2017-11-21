@@ -13,14 +13,13 @@ Keybinding = namedtuple('Keybinding', ['rotate_anti', 'rotate_clock', 'accelerat
 
 
 class Bird(AbstractPhysicsSprite):
-    def __init__(self, config, color, keybind, keepress_movement):
+    def __init__(self, config, color, keybind):
         size = config['bird_size']
         image = pg.Surface([size, size], pg.SRCALPHA)
         super().__init__(config, image)
+
         self.color = self.original_color = color
         self.keybind = keybind
-        # callback that handles movement
-        self.keepress_movement = keepress_movement
         # orientation in degrees, 0 east, positive anticlockwise
         self.orientation = 0
         self.has_ball = False
@@ -39,9 +38,6 @@ class Bird(AbstractPhysicsSprite):
         self.image = pg.transform.rotate(self.original_image, self.orientation)
         # rect needs to be readjusted to maintain original position
         self.rect = self.image.get_rect(center=self.center)
-
-    def handle_keypresses(self, pressed):
-        self.keepress_movement(pressed, self)
 
     def _normalise_orientation(self):
         if self.orientation > 0:

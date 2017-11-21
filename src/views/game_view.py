@@ -6,45 +6,15 @@ from views.view import AbstractView
 import random
 
 
-def handle_bird_movement(pressed_keys, bird):
-    if pressed_keys[bird.keybind.rotate_anti]:
-        bird.turn(Rotation.ANTICLOCKWISE)
-    if pressed_keys[bird.keybind.rotate_clock]:
-        bird.turn(Rotation.CLOCKWISE)
-
-    if pressed_keys[bird.keybind.accelerate]:
-        bird.acceleration = Vector2(bird.config['accel'], 0)
-
-        # boost handling
-        if pressed_keys[bird.keybind.boost]:
-            bird.acceleration = bird.acceleration.lerp(Vector2(bird.config['accel'] / bird.config['boost_slowdown']),
-                                                       bird.boost_time / bird.config['boost_time_required'])
-            bird.boost_time = min(bird.boost_time + 1, bird.config['boost_time_required'])
-        else:
-            if bird.boost_time > 0:
-                dv = Vector2(0, 0).lerp(Vector2(bird.config['boost_speed'], 0),
-                                        bird.boost_time / bird.config['boost_time_required'])
-                bird.velocity += dv.rotate(-bird.orientation)
-            bird.boost_time = 0
-        bird.acceleration.rotate_ip(-bird.orientation)
-    else:
-        # gravity
-        bird.acceleration = Vector2(0, bird.config['accel'])
-    # drag
-    bird.acceleration -= bird.config['drag'] * bird.velocity
-
-
 class GameView(AbstractView):
     def __init__(self, config, screen, clock):
         sprites = pg.sprite.Group()
         self.b1 = Bird(config,
                        pg.Color('RED'),
-                       Keybinding(rotate_anti=pg.K_a, rotate_clock=pg.K_d, accelerate=pg.K_f, boost=pg.K_g),
-                       handle_bird_movement)
+                       Keybinding(rotate_anti=pg.K_a, rotate_clock=pg.K_d, accelerate=pg.K_f, boost=pg.K_g))
         self.b2 = Bird(config,
                        pg.Color('BLUE'),
-                       Keybinding(rotate_anti=pg.K_LEFT, rotate_clock=pg.K_RIGHT, accelerate=pg.K_SLASH, boost=pg.K_PERIOD),
-                       handle_bird_movement)
+                       Keybinding(rotate_anti=pg.K_LEFT, rotate_clock=pg.K_RIGHT, accelerate=pg.K_SLASH, boost=pg.K_PERIOD))
         self.birds = [self.b1, self.b2]
 
         self.ball = Ball(config)
@@ -67,7 +37,7 @@ class GameView(AbstractView):
         if pressed[pg.K_p]:
             self._reset()
         for bird in self.birds:
-            bird.handle_keypresses(pressed)
+            self._handle_bird_keypresses(pressed, bird)
 
         return super()._handle_keypresses(pressed)
 
@@ -89,7 +59,7 @@ class GameView(AbstractView):
             if self.ball.rect.y < THRESHOLD or self.ball.rect.y > self.screen_rect.height - THRESHOLD:
                 self.ball.velocity.y *= -1
         # drag
-        self.ball.acceleration = Vector2(self.acceleration_from_gravity) - self.config['drag'] * self.ball.velocity
+        self.ball.acceleration = Vector2(self.acceleration_from_gravity) - self.config['ball_drag'] * self.ball.velocity
         self.ball.move()
         self.ball.keep_inside(self.screen_rect)
 
@@ -114,3 +84,41 @@ class GameView(AbstractView):
 
         for bird in self.birds:
             bird.keep_inside(self.screen_rect)
+
+    def _handle_bird_keypresses(self, pressed, bird):
+        if pressed[bird.keybind.rotate_anti]:
+            bird.turn(Rotation.ANTICLOCKWISE)
+        if pressed[bird.keybind.rotate_clock]:
+            bird.turn(Rotation.CLOCKWISE)
+
+        if pressed[bird.keybind.accelerate]:
+            bird.acceleration = Vector2(self.config['accel'], 0)
+
+            # boost handling
+            if pressed[bird.keybind.boost]:
+                bird.acceleration = bird.acceleration.lerp(Vector2(self.config['accel'] / self.config['boost_slowdown']),
+                                                        bird.boost_time / self.config['boost_time_required'])
+                bird.boost_time = min(bird.boost_time + 1, self.config['boost_time_required'])
+            else:
+                if bird.boost_time > 0:
+                    speed = self.config['ball_launch_speed'] if bird.has_ball else self.config['boost_speed']
+                    launchv = Vector2(0, 0).lerp(Vector2(speed, 0),
+                                                 bird.boost_time / self.config['boost_time_required'])
+                    launchv.rotate_ip(-bird.orientation)
+                    if bird.has_ball:
+                        # launch the ball
+                        self.ball.velocity = launchv
+                        self.ball.center = bird.center
+                        self.sprites.add(self.ball)
+
+                        bird.drop_ball()
+                    else:
+                        # launch the bird
+                        bird.velocity += launchv
+                    bird.boost_time = 0
+            bird.acceleration.rotate_ip(-bird.orientation)
+        else:
+            # gravity
+            bird.acceleration = Vector2(0, self.config['accel'])
+        # drag
+        bird.acceleration -= self.config['bird_drag'] * bird.velocity
