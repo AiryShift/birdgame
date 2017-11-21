@@ -3,6 +3,7 @@ from pygame.math import Vector2
 from sprites.ball import Ball
 from sprites.bird import Bird, Keybinding, Rotation
 from views.view import AbstractView
+import random
 
 
 def handle_bird_movement(pressed_keys, bird):
@@ -56,7 +57,7 @@ class GameView(AbstractView):
 
     def _reset(self):
         for bird in self.birds:
-            bird.center = self.screen_rect.center
+            bird.center = (0, 0)
         self.ball.center = self.screen_rect.center
         self.ball.acceleration = Vector2(self.acceleration_from_gravity)
         self.ball.velocity = Vector2(5, 0)  # FIXME: temp for testing
@@ -67,13 +68,13 @@ class GameView(AbstractView):
             self._reset()
         for bird in self.birds:
             bird.handle_keypresses(pressed)
+
         return super()._handle_keypresses(pressed)
 
     def _handle_bookkeeping(self):
         # movement for birds
         for bird in self.birds:
             bird.move()
-            bird.keep_inside(self.screen_rect)
 
         # movement for the ball
         # bounce
@@ -98,6 +99,7 @@ class GameView(AbstractView):
                 if pg.sprite.collide_rect(self.ball, bird):
                     bird.take_ball(pg.Color('YELLOW'))
                     self.ball.kill()
+                    break
         else:
             # steal the ball from another bird
             # assumes that ball isn't on-screen iff exactly one bird has the ball
@@ -105,4 +107,10 @@ class GameView(AbstractView):
             for thief in self.birds:
                 if thief is not victim and pg.sprite.collide_rect(thief, victim):
                     victim.drop_ball()
+                    # knock the victim around
+                    victim.velocity += Vector2(self.config['boost_speed'], 0).rotate(random.randrange(0, 360))
                     thief.take_ball(pg.Color('YELLOW'))
+                    break
+
+        for bird in self.birds:
+            bird.keep_inside(self.screen_rect)
