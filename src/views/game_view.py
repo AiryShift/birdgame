@@ -32,7 +32,11 @@ class GameView(AbstractView):
                        pg.Color('RED'),
                        Keybinding(rotate_anti=pg.K_a, rotate_clock=pg.K_d, accelerate=pg.K_f),
                        handle_bird_movement)
-        self.birds = [self.b1]
+        self.b2 = Bird(config,
+                       pg.Color('BLUE'),
+                       Keybinding(rotate_anti=pg.K_LEFT, rotate_clock=pg.K_RIGHT, accelerate=pg.K_SLASH),
+                       handle_bird_movement)
+        self.birds = [self.b1, self.b2]
 
         self.ball = Ball(config)
         sprites.add(self.ball, *self.birds)
@@ -59,8 +63,9 @@ class GameView(AbstractView):
 
     def _handle_bookkeeping(self):
         # movement for birds
-        self.b1.move()
-        self.b1.keep_inside(self.screen_rect)
+        for bird in self.birds:
+            bird.move()
+            bird.keep_inside(self.screen_rect)
 
         # movement for the ball
         # bounce
@@ -87,7 +92,7 @@ class GameView(AbstractView):
                     self.ball.kill()
         else:
             # steal the ball from another bird
-            # assumes that if the ball isn't on-screen then a bird has the ball
+            # assumes that ball isn't on-screen iff exactly one bird has the ball
             victim = next(bird for bird in self.birds if bird.has_ball)
             for thief in self.birds:
                 if thief is not victim and pg.sprite.collide_rect(thief, victim):
