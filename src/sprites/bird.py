@@ -9,7 +9,7 @@ class Rotation(enum.Enum):
     ANTICLOCKWISE = enum.auto()
 
 
-Keybinding = namedtuple('Keybinding', ['rotate_anti', 'rotate_clock', 'accelerate'])
+Keybinding = namedtuple('Keybinding', ['rotate_anti', 'rotate_clock', 'accelerate', 'boost'])
 
 
 class Bird(AbstractPhysicsSprite):
@@ -24,6 +24,7 @@ class Bird(AbstractPhysicsSprite):
         # orientation in degrees, 0 east, positive anticlockwise
         self.orientation = 0
         self.has_ball = False
+        self.boost_time = 0
 
         # used for rotations
         self.original_image = self.image

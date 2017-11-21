@@ -2,8 +2,12 @@
 	"size": [1920, 1080],
 	"title": "Bird Game",
 	"fps": 60,
-	"speed": 12,
-	"accel": 0.5,
+	"speed": 6,
+	"accel": 0.25,
 	"bird_size": 20,
-	"ball_size": 20
+	"ball_size": 20,
+	"drag": 0.03,
+	"boost_slowdown": 4,
+	"boost_speed": 20,
+	"boost_time_required": 60
 }
