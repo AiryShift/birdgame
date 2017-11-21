@@ -1,19 +1,41 @@
 import pygame as pg
 from pygame.math import Vector2
 from sprites.ball import Ball
-from sprites.bird import Bird, Rotation
+from sprites.bird import Bird, Keybinding, Rotation
 from views.view import AbstractView
 
 
 DRAG_COEFFICIENT = 0.01
 
 
+def handle_bird_movement(pressed_keys, bird):
+    if pressed_keys[bird.keybind.rotate_anti]:
+        bird.turn(Rotation.ANTICLOCKWISE)
+    if pressed_keys[bird.keybind.rotate_clock]:
+        bird.turn(Rotation.CLOCKWISE)
+    if pressed_keys[bird.keybind.accelerate]:
+        # negative of orientation because rotate goes clockwise
+        # boosting in one direction imparts a constant velocity
+        bird.velocity = Vector2(bird.config['speed'], 0).rotate(-bird.orientation)
+        bird.acceleration = Vector2(0, 0)
+    else:
+        # gravity
+        bird.acceleration = Vector2(0, bird.config['accel'])
+        # drag
+        bird.acceleration += -DRAG_COEFFICIENT * bird.velocity
+
+
 class GameView(AbstractView):
     def __init__(self, config, screen, clock):
         sprites = pg.sprite.Group()
-        self.b1 = Bird(config, pg.Color('RED'))
+        self.b1 = Bird(config,
+                       pg.Color('RED'),
+                       Keybinding(rotate_anti=pg.K_a, rotate_clock=pg.K_d, accelerate=pg.K_f),
+                       handle_bird_movement)
+        self.birds = [self.b1]
+
         self.ball = Ball(config)
-        sprites.add(self.b1, self.ball)
+        sprites.add(self.ball, *self.birds)
         super().__init__('game', config, screen, clock, sprites)
         self._init_constants()
 
@@ -21,38 +43,24 @@ class GameView(AbstractView):
         self.acceleration_from_gravity = Vector2(0, self.config['accel'])
 
     def _reset(self):
-        self.b1.center = self.screen_rect.center
+        for bird in self.birds:
+            bird.center = self.screen_rect.center
         self.ball.center = self.screen_rect.center
         self.ball.acceleration = Vector2(self.acceleration_from_gravity)
         self.ball.velocity = Vector2(5, 0)  # FIXME: temp for testing
 
     def _handle_keypresses(self, pressed):
-        if pressed[pg.K_a]:
-            self.b1.turn(Rotation.ANTICLOCKWISE)
-        if pressed[pg.K_d]:
-            self.b1.turn(Rotation.CLOCKWISE)
         # debugging
         if pressed[pg.K_p]:
             self._reset()
-
-        if pressed[pg.K_f]:
-            # negative of orientation because rotate goes clockwise
-            # boosting in one direction imparts a constant velocity
-            self.b1.velocity = Vector2(self.config['speed'], 0).rotate(-self.b1.orientation)
-            self.b1.acceleration = Vector2(0, 0)
-        else:
-            # gravity
-            self.b1.acceleration = Vector2(self.acceleration_from_gravity)
-            # drag
-            self.b1.acceleration += -DRAG_COEFFICIENT * self.b1.velocity
-
+        for bird in self.birds:
+            bird.handle_keypresses(pressed)
         return super()._handle_keypresses(pressed)
 
     def _handle_bookkeeping(self):
         # movement for birds
         self.b1.move()
         self.b1.keep_inside(self.screen_rect)
-
 
         # movement for the ball
         # bounce
@@ -70,3 +78,18 @@ class GameView(AbstractView):
         self.ball.acceleration = Vector2(self.acceleration_from_gravity) + -DRAG_COEFFICIENT * self.ball.velocity
         self.ball.move()
         self.ball.keep_inside(self.screen_rect)
+
+        if self.ball in self.sprites:
+            # bird picking up a ball
+            for bird in self.birds:
+                if pg.sprite.collide_rect(self.ball, bird):
+                    bird.take_ball(pg.Color('YELLOW'))
+                    self.ball.kill()
+        else:
+            # steal the ball from another bird
+            # assumes that if the ball isn't on-screen then a bird has the ball
+            victim = next(bird for bird in self.birds if bird.has_ball)
+            for thief in self.birds:
+                if thief is not victim and pg.sprite.collide_rect(thief, victim):
+                    victim.drop_ball()
+                    thief.take_ball(pg.Color('YELLOW'))

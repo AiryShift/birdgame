@@ -1,3 +1,4 @@
+from collections import namedtuple
 import enum
 import pygame as pg
 from sprites.sprite import AbstractPhysicsSprite
@@ -8,18 +9,24 @@ class Rotation(enum.Enum):
     ANTICLOCKWISE = enum.auto()
 
 
+Keybinding = namedtuple('Keybinding', ['rotate_anti', 'rotate_clock', 'accelerate'])
+
+
 class Bird(AbstractPhysicsSprite):
-    def __init__(self, config, color):
+    def __init__(self, config, color, keybind, keepress_movement):
         size = config['bird_size']
         image = pg.Surface([size, size], pg.SRCALPHA)
         super().__init__(config, image)
-        self.color = color
+        self.color = self.original_color = color
+        self.keybind = keybind
+        # callback that handles movement
+        self.keepress_movement = keepress_movement
+        # orientation in degrees, 0 east, positive anticlockwise
+        self.orientation = 0
+        self.has_ball = False
 
         # used for rotations
         self.original_image = self.image
-
-        # orientation in degrees, 0 east, positive anticlockwise
-        self.orientation = 0
 
     def turn(self, rotation):
         if rotation is Rotation.CLOCKWISE:
@@ -32,6 +39,9 @@ class Bird(AbstractPhysicsSprite):
         # rect needs to be readjusted to maintain original position
         self.rect = self.image.get_rect(center=self.center)
 
+    def handle_keypresses(self, pressed):
+        self.keepress_movement(pressed, self)
+
     def _normalise_orientation(self):
         if self.orientation > 0:
             while self.orientation > 360:
@@ -40,6 +50,14 @@ class Bird(AbstractPhysicsSprite):
             while self.orientation < 0:
                 self.orientation += 360
         return self.orientation
+
+    def take_ball(self, color):
+        self.color = color
+        self.has_ball = True
+
+    def drop_ball(self):
+        self.color = self.original_color
+        self.has_ball = False
 
     @property
     def color(self):
