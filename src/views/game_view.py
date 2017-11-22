@@ -1,7 +1,7 @@
 import pygame as pg
 from pygame.math import Vector2
 from sprites.ball import Ball
-from sprites.bird import Bird, Keybinding, Rotation
+from sprites.bird import Bird, Keybinding
 from views.view import AbstractView
 import random
 
@@ -87,9 +87,9 @@ class GameView(AbstractView):
 
     def _handle_bird_keypresses(self, pressed, bird):
         if pressed[bird.keybind.rotate_anti]:
-            bird.turn(Rotation.ANTICLOCKWISE)
+            bird.turn(self.config['bird_rotation_speed'])
         if pressed[bird.keybind.rotate_clock]:
-            bird.turn(Rotation.CLOCKWISE)
+            bird.turn(-self.config['bird_rotation_speed'])
 
         if pressed[bird.keybind.accelerate]:
             bird.acceleration = Vector2(self.config['accel'], 0)

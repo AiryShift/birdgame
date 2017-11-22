@@ -4,11 +4,6 @@ import pygame as pg
 from sprites.sprite import AbstractPhysicsSprite
 
 
-class Rotation(enum.Enum):
-    CLOCKWISE = enum.auto()
-    ANTICLOCKWISE = enum.auto()
-
-
 Keybinding = namedtuple('Keybinding', ['rotate_anti', 'rotate_clock', 'accelerate', 'boost'])
 
 
@@ -22,7 +17,7 @@ class Bird(AbstractPhysicsSprite):
         self.image.fill(self._color)
         self.keybind = keybind
         # orientation in degrees, 0 east, positive anticlockwise
-        self.orientation = 0
+        self._orientation = 0
         self.has_ball = False
         self.boost_time = 0
 
@@ -30,20 +25,8 @@ class Bird(AbstractPhysicsSprite):
         self._original_image = self.image
 
     def turn(self, rotation):
-        if rotation is Rotation.CLOCKWISE:
-            self.orientation -= 5  # FIXME: better value
-        else:
-            self.orientation += 5  # FIXME: better value
-        self._normalise_orientation()
+        self.orientation += rotation
         self._rotate_image()
-
-    def _normalise_orientation(self):
-        if self.orientation > 0:
-            while self.orientation > 360:
-                self.orientation -= 360
-        elif self.orientation < 0:
-            while self.orientation < 0:
-                self.orientation += 360
 
     def _rotate_image(self):
         self.image = pg.transform.rotate(self._original_image, self.orientation)
@@ -73,3 +56,18 @@ class Bird(AbstractPhysicsSprite):
         self._color = value
         self._original_image = self._init_image(self._color)
         self._rotate_image()
+
+    @property
+    def orientation(self):
+        return self._orientation
+
+    @orientation.setter
+    def orientation(self, value):
+        self._orientation = value
+        # restrict possible values
+        if self._orientation > 360:
+            while self._orientation > 360:
+                self._orientation -= 360
+        elif self._orientation < 0:
+            while self._orientation < 0:
+                self._orientation += 360

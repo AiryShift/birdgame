@@ -11,5 +11,6 @@
 	"boost_slowdown": 4,
 	"boost_speed": 20,
 	"boost_time_required": 60,
-	"ball_launch_speed": 50
+	"ball_launch_speed": 50,
+	"bird_rotation_speed": 5
 }
