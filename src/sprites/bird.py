@@ -18,7 +18,8 @@ class Bird(AbstractPhysicsSprite):
         image = pg.Surface([size, size], pg.SRCALPHA)
         super().__init__(config, image)
 
-        self.color = self.original_color = color
+        self._color = self._original_color = color
+        self.image.fill(self._color)
         self.keybind = keybind
         # orientation in degrees, 0 east, positive anticlockwise
         self.orientation = 0
@@ -26,7 +27,7 @@ class Bird(AbstractPhysicsSprite):
         self.boost_time = 0
 
         # used for rotations
-        self.original_image = self.image
+        self._original_image = self.image
 
     def turn(self, rotation):
         if rotation is Rotation.CLOCKWISE:
@@ -34,10 +35,7 @@ class Bird(AbstractPhysicsSprite):
         else:
             self.orientation += 5  # FIXME: better value
         self._normalise_orientation()
-
-        self.image = pg.transform.rotate(self.original_image, self.orientation)
-        # rect needs to be readjusted to maintain original position
-        self.rect = self.image.get_rect(center=self.center)
+        self._rotate_image()
 
     def _normalise_orientation(self):
         if self.orientation > 0:
@@ -47,13 +45,24 @@ class Bird(AbstractPhysicsSprite):
             while self.orientation < 0:
                 self.orientation += 360
 
+    def _rotate_image(self):
+        self.image = pg.transform.rotate(self._original_image, self.orientation)
+        # rect needs to be readjusted to maintain original position
+        self.rect = self.image.get_rect(center=self.center)
+
     def take_ball(self, color):
         self.color = color
         self.has_ball = True
 
     def drop_ball(self):
-        self.color = self.original_color
+        self.color = self._original_color
         self.has_ball = False
+
+    def _init_image(self, color):
+        size = self.config['bird_size']
+        image = pg.Surface([size, size], pg.SRCALPHA)
+        image.fill(color)
+        return image
 
     @property
     def color(self):
@@ -62,4 +71,5 @@ class Bird(AbstractPhysicsSprite):
     @color.setter
     def color(self, value):
         self._color = value
-        self.image.fill(self._color)
+        self._original_image = self._init_image(self._color)
+        self._rotate_image()
