@@ -2,6 +2,7 @@
 	"size": [1920, 1080],
 	"title": "Bird Game",
 	"fps": 60,
+	"first_view": "game",
 	"speed": 6,
 	"accel": 0.25,
 	"bird_size": 20,

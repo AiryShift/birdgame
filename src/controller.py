@@ -11,7 +11,7 @@ class Controller:
         self.views = {view.name: view for view in view_list}
 
     def run(self):
-        transition = 'game'  # default first view, TODO: something more customisable
+        transition = self.config['first_view']
         while True:
             next_view = self.views[transition]
             transition = next_view.render()
