@@ -46,7 +46,6 @@ class Bird(AbstractPhysicsSprite):
         elif self.orientation < 0:
             while self.orientation < 0:
                 self.orientation += 360
-        return self.orientation
 
     def take_ball(self, color):
         self.color = color
