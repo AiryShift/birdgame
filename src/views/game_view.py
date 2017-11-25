@@ -88,13 +88,15 @@ class GameView(AbstractView):
             # steal the ball from another bird
             # assumes that ball isn't on-screen iff exactly one bird has the ball
             victim = next(bird for bird in self.birds if bird.has_ball)
-            for thief in self.birds:
-                if thief is not victim and pg.sprite.collide_rect(thief, victim):
-                    victim.drop_ball()
-                    # knock the victim around
-                    victim.velocity += Vector2(self.config['boost_speed'], 0).rotate(random.randrange(0, 360))
-                    thief.take_ball(pg.Color('YELLOW'))
-                    break
+            if victim.invulnerability == 0:
+                for thief in self.birds:
+                    if thief is not victim and pg.sprite.collide_rect(thief, victim):
+                        victim.drop_ball()
+                        # knock the victim around
+                        victim.velocity += Vector2(self.config['boost_speed'], 0).rotate(random.randrange(0, 360))
+                        thief.take_ball(pg.Color('YELLOW'))
+                        thief.invulnerability += self.config['thief_invuln_time']
+                        break
 
         for bird in self.birds:
             bird.keep_inside(self.screen_rect)

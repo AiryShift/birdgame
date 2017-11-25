@@ -29,6 +29,8 @@
 	"boost_speed": 20,
 	"boost_time_required": 60,
 	"ball_launch_speed": 50,
+	// invuln in terms of frames
+	"thief_invuln_time": 15,
 	// rotation in terms of degrees per frame
 	"bird_rotation_speed": 5
 }

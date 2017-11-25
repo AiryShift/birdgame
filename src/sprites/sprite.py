@@ -39,6 +39,7 @@ class AbstractPhysicsSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
         self.image = image
         self.velocity = Vector2(0, 0)
         self.acceleration = Vector2(0, 0)
+        self.invulnerability = 0
 
         # interact with this position vector instead of rect for accuracy
         self._rect = self.image.get_rect()
@@ -49,6 +50,7 @@ class AbstractPhysicsSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
     def move(self):
         self.velocity += self.acceleration
         self._position += self.velocity
+        self.invulnerability = max(self.invulnerability - 1, 0)
 
     def keep_inside(self, containing_rect):
         # cannot clamp in place because rect is virtual
