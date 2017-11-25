@@ -1,13 +1,13 @@
 // Copyright 2017 Julian Tu
 
-// Licensed under the Apache License, Version2.0 (the"License");
+// Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 
 //     http: //www.apache.org/licenses/LICENSE-2.0
 
 // Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an"AS IS" BASIS,
+// distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
@@ -17,15 +17,18 @@
 	"title": "Bird Game",
 	"fps": 60,
 	"first_view": "game",
+	// all speeds/accelerations in terms of pixels per frame
 	"speed": 6,
 	"accel": 0.25,
 	"bird_size": 20,
 	"ball_size": 20,
+	// arbitrary drag coefficients
 	"bird_drag": 0.03,
 	"ball_drag": 0.015,
 	"boost_slowdown": 4,
 	"boost_speed": 20,
 	"boost_time_required": 60,
 	"ball_launch_speed": 50,
+	// rotation in terms of degrees per frame
 	"bird_rotation_speed": 5
 }
