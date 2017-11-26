@@ -30,6 +30,14 @@ class AbstractStaticSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
         self.image = image
         self.rect = self.image.get_rect()
 
+    @property
+    def center(self):
+        return self.rect.center
+
+    @center.setter
+    def center(self, value):
+        self.rect.center = value
+
 
 class AbstractPhysicsSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
     @abc.abstractmethod
