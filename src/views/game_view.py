@@ -15,6 +15,7 @@
 import pygame as pg
 from pygame.math import Vector2
 from sprites.ball import Ball
+from sprites.goal import Goal
 from sprites.bird import Bird, Keybinding
 from views.view import AbstractView
 import random
@@ -25,14 +26,19 @@ class GameView(AbstractView):
         sprites = pg.sprite.Group()
         self.b1 = Bird(config,
                        pg.Color('RED'),
-                       Keybinding(rotate_anti=pg.K_a, rotate_clock=pg.K_d, accelerate=pg.K_f, boost=pg.K_g))
+                       Keybinding(rotate_anti=pg.K_a, rotate_clock=pg.K_d, accelerate=pg.K_f, boost=pg.K_g),
+                       1)
         self.b2 = Bird(config,
                        pg.Color('BLUE'),
-                       Keybinding(rotate_anti=pg.K_LEFT, rotate_clock=pg.K_RIGHT, accelerate=pg.K_SLASH, boost=pg.K_PERIOD))
+                       Keybinding(rotate_anti=pg.K_LEFT, rotate_clock=pg.K_RIGHT, accelerate=pg.K_SLASH, boost=pg.K_PERIOD),
+                       2)
+        self.g1 = Goal(config, config['goal_size'], pg.Color('GREEN'), 1)
+        self.g2 = Goal(config, config['goal_size'], pg.Color('GREEN'), 2)
         self.birds = [self.b1, self.b2]
+        self.goals = [self.g1, self.g2]
 
         self.ball = Ball(config)
-        sprites.add(self.ball, *self.birds)
+        sprites.add(self.ball, *self.birds, *self.goals)
         super().__init__('game', config, screen, clock, sprites)
         self._init_constants()
 
@@ -46,6 +52,13 @@ class GameView(AbstractView):
             bird.center = (0, 0)
         self.ball.center = self.screen_rect.center
         self.ball.acceleration = Vector2(self.acceleration_from_gravity)
+
+        screen_x, screen_y = self.config['size']
+        self.g1.center = (0, screen_y // 2)
+        self.g2.center = (screen_x, screen_y // 2)
+        self.g1.rect.clamp_ip(self.screen_rect)
+        self.g2.rect.clamp_ip(self.screen_rect)
+
         # TODO: proper initial launching
         self.ball.velocity = Vector2(5, 0).rotate(random.randrange(0, 360))
 

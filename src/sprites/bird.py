@@ -22,7 +22,7 @@ Keybinding = namedtuple('Keybinding', ['rotate_anti', 'rotate_clock', 'accelerat
 
 
 class Bird(AbstractPhysicsSprite):
-    def __init__(self, config, color, keybind):
+    def __init__(self, config, color, keybind, team):
         size = config['bird_size']
         image = pg.Surface([size, size], pg.SRCALPHA)
         super().__init__(config, image)
@@ -30,6 +30,7 @@ class Bird(AbstractPhysicsSprite):
         self._color = self._original_color = color
         self.image.fill(self._color)
         self.keybind = keybind
+        self.team = team
         # orientation in degrees, 0 east, positive anticlockwise
         self._orientation = 0
         self.has_ball = False
