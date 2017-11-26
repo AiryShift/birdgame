@@ -13,8 +13,9 @@
 # limitations under the License.
 
 import abc
-import pygame as pg
 import sys
+
+import pygame as pg
 
 
 class AbstractView(metaclass=abc.ABCMeta):

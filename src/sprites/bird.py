@@ -13,10 +13,10 @@
 # limitations under the License.
 
 from collections import namedtuple
-import enum
-import pygame as pg
-from sprites.sprite import AbstractPhysicsSprite
 
+import pygame as pg
+
+from sprites.sprite import AbstractPhysicsSprite
 
 Keybinding = namedtuple('Keybinding', ['rotate_anti', 'rotate_clock', 'accelerate', 'boost'])
 

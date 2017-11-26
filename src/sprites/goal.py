@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import pygame as pg
+
 from sprites.sprite import AbstractStaticSprite
 
 

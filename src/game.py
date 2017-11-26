@@ -14,11 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from controller import Controller
 import json
-from json_minify import json_minify
-import pygame as pg
 
+import pygame as pg
+from json_minify import json_minify
+
+from controller import Controller
 
 if __name__ == '__main__':
     with open('config.json') as json_file:

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import abc
+
 import pygame as pg
 from pygame.math import Vector2
 

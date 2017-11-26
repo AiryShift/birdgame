@@ -12,13 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import random
+
 import pygame as pg
 from pygame.math import Vector2
+
 from sprites.ball import Ball
-from sprites.goal import Goal
 from sprites.bird import Bird, Keybinding
+from sprites.goal import Goal
 from views.view import AbstractView
-import random
 
 
 class GameView(AbstractView):

@@ -13,7 +13,9 @@
 # limitations under the License.
 
 import pygame as pg
+
 from views.game_view import GameView
+
 
 class Controller:
     def __init__(self, config, screen, clock):
