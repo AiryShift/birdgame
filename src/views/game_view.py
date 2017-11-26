@@ -44,7 +44,8 @@ class GameView(AbstractView):
             bird.center = (0, 0)
         self.ball.center = self.screen_rect.center
         self.ball.acceleration = Vector2(self.acceleration_from_gravity)
-        self.ball.velocity = Vector2(5, 0)  # FIXME: temp for testing
+        # TODO: proper initial launching
+        self.ball.velocity = Vector2(5, 0).rotate(random.randrange(0, 360))
 
     def _handle_keypresses(self, pressed):
         # debugging
@@ -65,7 +66,6 @@ class GameView(AbstractView):
         if self.ball.was_contained():
             THRESHOLD = 50  # FIXME: better way
             # checking distance from walls to determine which it bounced off
-
             # left or right
             if self.ball.rect.x < THRESHOLD or self.ball.rect.x > self.screen_rect.width - THRESHOLD:
                 self.ball.velocity.x *= -1
@@ -77,6 +77,7 @@ class GameView(AbstractView):
         self.ball.move()
         self.ball.keep_inside(self.screen_rect)
 
+        # assumes that ball isn't on-screen iff exactly one bird has the ball
         if self.ball in self.sprites:
             # bird picking up a ball
             for bird in self.birds:
@@ -86,7 +87,6 @@ class GameView(AbstractView):
                     break
         else:
             # steal the ball from another bird
-            # assumes that ball isn't on-screen iff exactly one bird has the ball
             victim = next(bird for bird in self.birds if bird.has_ball)
             if victim.invulnerability == 0:
                 for thief in self.birds:
@@ -113,7 +113,7 @@ class GameView(AbstractView):
             # boost handling
             if pressed[bird.keybind.boost]:
                 bird.acceleration = bird.acceleration.lerp(Vector2(self.config['accel'] / self.config['boost_slowdown']),
-                                                        bird.boost_time / self.config['boost_time_required'])
+                                                           bird.boost_time / self.config['boost_time_required'])
                 bird.boost_time = min(bird.boost_time + 1, self.config['boost_time_required'])
             else:
                 if bird.boost_time > 0:
