@@ -14,6 +14,7 @@
 
 import abc
 import pygame as pg
+import sys
 
 
 class AbstractView(metaclass=abc.ABCMeta):
@@ -26,6 +27,10 @@ class AbstractView(metaclass=abc.ABCMeta):
         self.screen_rect = self.screen.get_rect()
         self.clock = clock
         self.sprites = sprites
+        self._init_constants()
+
+    def _init_constants(self):
+        self.screen_bg_color = pg.Color('BLACK')
 
     def _reset(self):
         """
@@ -40,7 +45,7 @@ class AbstractView(metaclass=abc.ABCMeta):
         """
         self._reset()
         transition = None
-        while not transition:
+        while transition is None:
             for event in pg.event.get():
                 transition = transition or self._handle_event(event)
             transition = transition or self._handle_keypresses(pg.key.get_pressed())
@@ -58,7 +63,7 @@ class AbstractView(metaclass=abc.ABCMeta):
         """
         if event.type == pg.QUIT:
             # pressing the 'X' button quits the game
-            exit()
+            sys.exit()
 
     def _handle_keypresses(self, pressed):
         """
@@ -68,7 +73,7 @@ class AbstractView(metaclass=abc.ABCMeta):
         """
         if pressed[pg.K_ESCAPE]:
             # pressing the ESC button quits the game
-            exit()
+            sys.exit()
         if pressed[pg.K_F11]:
             self._flip_fullscreen()
 
@@ -80,7 +85,7 @@ class AbstractView(metaclass=abc.ABCMeta):
         """
 
     def _update_screen(self):
-        self.screen.fill(pg.Color('BLACK'))
+        self.screen.fill(self.screen_bg_color)
         self.sprites.draw(self.screen)
         pg.display.update()
 

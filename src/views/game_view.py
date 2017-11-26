@@ -37,7 +37,9 @@ class GameView(AbstractView):
         self._init_constants()
 
     def _init_constants(self):
+        super()._init_constants()
         self.acceleration_from_gravity = Vector2(0, self.config['accel'])
+        self.ball_stolen_color = pg.Color('YELLOW')
 
     def _reset(self):
         for bird in self.birds:
@@ -82,7 +84,7 @@ class GameView(AbstractView):
             # bird picking up a ball
             for bird in self.birds:
                 if pg.sprite.collide_rect(self.ball, bird):
-                    bird.take_ball(pg.Color('YELLOW'))
+                    bird.take_ball(self.ball_stolen_color)
                     self.ball.kill()
                     break
         else:
@@ -94,7 +96,7 @@ class GameView(AbstractView):
                         victim.drop_ball()
                         # knock the victim around
                         victim.velocity += Vector2(self.config['boost_speed'], 0).rotate(random.randrange(0, 360))
-                        thief.take_ball(pg.Color('YELLOW'))
+                        thief.take_ball(self.ball_stolen_color)
                         thief.invulnerability += self.config['thief_invuln_time']
                         break
 
