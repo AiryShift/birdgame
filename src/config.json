@@ -33,5 +33,6 @@
 	"thief_invuln_time": 15,
 	// rotation in terms of degrees per frame
 	"bird_rotation_speed": 5,
-	"goal_size": [70, 300]
+	"goal_size": [70, 300],
+	"score_size": 150
 }

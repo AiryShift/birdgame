@@ -21,6 +21,7 @@ from common.team import Team
 from sprites.ball import Ball
 from sprites.bird import Bird, Keybinding
 from sprites.goal import Goal
+from sprites.scoreboard import Scoreboard
 from views.view import AbstractView
 
 
@@ -36,10 +37,13 @@ class GameView(AbstractView):
                        Team.RIGHT)
         self.g1 = Goal(config, config['goal_size'], pg.Color('GREEN'), Team.LEFT)
         self.g2 = Goal(config, config['goal_size'], pg.Color('GREEN'), Team.RIGHT)
+        self.scoreboard = Scoreboard(config, pg.Color('WHITE'))
         self.birds = [self.b1, self.b2]
         self.goals = [self.g1, self.g2]
         self.ball = Ball(config)
-        sprites = pg.sprite.Group(self.ball, *self.birds, *self.goals)
+        sprites = pg.sprite.Group(self.ball, *self.birds, *self.goals, self.scoreboard)
+
+        self.score = {team: 0 for team in Team}
         super().__init__('game', config, screen, clock, sprites)
 
     def _init_constants(self):
@@ -68,8 +72,14 @@ class GameView(AbstractView):
         # place goals on opposite sides of the starting positions
         self.g1.center = (screen_x, screen_y // 2)
         self.g2.center = (0, screen_y // 2)
+        self.scoreboard.center = (screen_x // 2, 0)
+
         self.g1.rect.clamp_ip(self.screen_rect)
         self.g2.rect.clamp_ip(self.screen_rect)
+        self.scoreboard.rect.clamp_ip(self.screen_rect)
+
+        self.score = {team: 0 for team in Team}
+        self.scoreboard.score = self.score
         self._soft_reset()
 
     def _handle_keypresses(self, pressed):
@@ -102,6 +112,7 @@ class GameView(AbstractView):
         self.ball.move()
         self.ball.keep_inside(self.screen_rect)
 
+        # bird-ball interaction
         # assumes that ball isn't on-screen iff exactly one bird has the ball
         if self.ball in self.sprites:
             # bird picking up a ball
@@ -122,6 +133,21 @@ class GameView(AbstractView):
                         thief.take_ball(self.ball_stolen_color)
                         thief.invulnerability += self.config['thief_invuln_time']
                         break
+
+        # scoring
+        ball_rect = None
+        if self.ball in self.sprites:
+            ball_rect = self.ball.rect
+        else:
+            ball_rect = next(bird.rect for bird in self.birds if bird.has_ball)
+        if ball_rect is not None:
+            for goal in self.goals:
+                if goal.rect.contains(ball_rect):
+                    # score for the team that owns the goalposts
+                    self.score[goal.team] += 1
+                    self.scoreboard.score = self.score
+                    self._soft_reset()
+                    break
 
         for bird in self.birds:
             bird.keep_inside(self.screen_rect)
