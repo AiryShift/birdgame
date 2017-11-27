@@ -17,6 +17,7 @@ import random
 import pygame as pg
 from pygame.math import Vector2
 
+from common.team import Team
 from sprites.ball import Ball
 from sprites.bird import Bird, Keybinding
 from sprites.goal import Goal
@@ -28,13 +29,13 @@ class GameView(AbstractView):
         self.b1 = Bird(config,
                        pg.Color('RED'),
                        Keybinding(rotate_anti=pg.K_a, rotate_clock=pg.K_d, accelerate=pg.K_f, boost=pg.K_g),
-                       1)
+                       Team.LEFT)
         self.b2 = Bird(config,
                        pg.Color('BLUE'),
                        Keybinding(rotate_anti=pg.K_LEFT, rotate_clock=pg.K_RIGHT, accelerate=pg.K_SLASH, boost=pg.K_PERIOD),
-                       2)
-        self.g1 = Goal(config, config['goal_size'], pg.Color('GREEN'), 1)
-        self.g2 = Goal(config, config['goal_size'], pg.Color('GREEN'), 2)
+                       Team.RIGHT)
+        self.g1 = Goal(config, config['goal_size'], pg.Color('GREEN'), Team.LEFT)
+        self.g2 = Goal(config, config['goal_size'], pg.Color('GREEN'), Team.RIGHT)
         self.birds = [self.b1, self.b2]
         self.goals = [self.g1, self.g2]
         self.ball = Ball(config)
