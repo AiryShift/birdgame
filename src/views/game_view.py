@@ -25,7 +25,6 @@ from views.view import AbstractView
 
 class GameView(AbstractView):
     def __init__(self, config, screen, clock):
-        sprites = pg.sprite.Group()
         self.b1 = Bird(config,
                        pg.Color('RED'),
                        Keybinding(rotate_anti=pg.K_a, rotate_clock=pg.K_d, accelerate=pg.K_f, boost=pg.K_g),
@@ -38,31 +37,39 @@ class GameView(AbstractView):
         self.g2 = Goal(config, config['goal_size'], pg.Color('GREEN'), 2)
         self.birds = [self.b1, self.b2]
         self.goals = [self.g1, self.g2]
-
         self.ball = Ball(config)
-        sprites.add(self.ball, *self.birds, *self.goals)
+        sprites = pg.sprite.Group(self.ball, *self.birds, *self.goals)
         super().__init__('game', config, screen, clock, sprites)
-        self._init_constants()
 
     def _init_constants(self):
         super()._init_constants()
         self.acceleration_from_gravity = Vector2(0, self.config['accel'])
         self.ball_stolen_color = pg.Color('YELLOW')
 
-    def _reset(self):
+    def _soft_reset(self):
+        """
+        Resets properties enough to start a new round of the game
+
+        This is distinct from _reset which is used for screen transitions
+        """
         for bird in self.birds:
             bird.center = (0, 0)
+            bird.drop_ball()
+        self.sprites.add(self.ball)
         self.ball.center = self.screen_rect.center
         self.ball.acceleration = Vector2(self.acceleration_from_gravity)
 
-        screen_x, screen_y = self.config['size']
-        self.g1.center = (0, screen_y // 2)
-        self.g2.center = (screen_x, screen_y // 2)
-        self.g1.rect.clamp_ip(self.screen_rect)
-        self.g2.rect.clamp_ip(self.screen_rect)
-
         # TODO: proper initial launching
         self.ball.velocity = Vector2(5, 0).rotate(random.randrange(0, 360))
+
+    def _reset(self):
+        screen_x, screen_y = self.config['size']
+        # place goals on opposite sides of the starting positions
+        self.g1.center = (screen_x, screen_y // 2)
+        self.g2.center = (0, screen_y // 2)
+        self.g1.rect.clamp_ip(self.screen_rect)
+        self.g2.rect.clamp_ip(self.screen_rect)
+        self._soft_reset()
 
     def _handle_keypresses(self, pressed):
         # debugging
