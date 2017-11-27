@@ -166,23 +166,22 @@ class GameView(AbstractView):
                 bird.acceleration = bird.acceleration.lerp(Vector2(self.config['accel'] / self.config['boost_slowdown']),
                                                            bird.boost_time / self.config['boost_time_required'])
                 bird.boost_time = min(bird.boost_time + 1, self.config['boost_time_required'])
-            else:
-                if bird.boost_time > 0:
-                    speed = self.config['ball_launch_speed'] if bird.has_ball else self.config['boost_speed']
-                    launchv = Vector2(0, 0).lerp(Vector2(speed, 0),
-                                                 bird.boost_time / self.config['boost_time_required'])
-                    launchv.rotate_ip(-bird.orientation)
-                    if bird.has_ball:
-                        # launch the ball
-                        self.ball.velocity = launchv
-                        self.ball.center = bird.center
-                        self.sprites.add(self.ball)
+            elif bird.boost_time > 0:
+                speed = self.config['ball_launch_speed'] if bird.has_ball else self.config['boost_speed']
+                launchv = Vector2(0, 0).lerp(Vector2(speed, 0),
+                                                bird.boost_time / self.config['boost_time_required'])
+                launchv.rotate_ip(-bird.orientation)
+                if bird.has_ball:
+                    # launch the ball
+                    self.ball.velocity = launchv
+                    self.ball.center = bird.center
+                    self.sprites.add(self.ball)
 
-                        bird.drop_ball()
-                    else:
-                        # launch the bird
-                        bird.velocity += launchv
-                    bird.boost_time = 0
+                    bird.drop_ball()
+                else:
+                    # launch the bird
+                    bird.velocity += launchv
+                bird.boost_time = 0
             bird.acceleration.rotate_ip(-bird.orientation)
         else:
             # gravity
