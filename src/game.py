@@ -32,9 +32,6 @@ if __name__ == '__main__':
     )
     pg.display.set_caption(config['title'])
     clock = pg.time.Clock()
-    # sets delay before keypress event is sent to 1ms
-    # keypress event is repeated at a rate of 60Hz
-    pg.key.set_repeat(1, 1000 // config['fps'])
 
     controller = Controller(config, screen, clock)
     controller.run()
