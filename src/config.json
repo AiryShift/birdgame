@@ -19,17 +19,17 @@
 	"first_view": "game",
 	// all speeds/accelerations in terms of pixels per frame
 	"speed": 6,
-	"accel": 0.25,
-	"accel_ball": 0.18,
+	"accel": 0.15,
+	"accel_ball": 0.1,
 	"bird_size": 20,
 	"ball_size": 20,
 	// arbitrary drag coefficients
 	"bird_drag": 0.03,
-	"ball_drag": 0.015,
+	"ball_drag": 0.01,
 	"boost_slowdown": 4,
 	"boost_speed": 20,
 	"boost_time_required": 60,
-	"ball_launch_speed": 50,
+	"ball_launch_speed": 25,
 	// invuln in terms of frames
 	"thief_invuln_time": 15,
 	// rotation in terms of degrees per frame
