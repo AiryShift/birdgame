@@ -57,8 +57,14 @@ class GameView(AbstractView):
 
         This is distinct from _reset which is used for screen transitions
         """
+        screen_x, screen_y = self.config['size']
         for bird in self.birds:
-            bird.center = (0, 0)
+            if bird.team is Team.LEFT:
+                bird.center = (screen_x // 2 - 400, screen_y // 2)
+                bird.orientation = 0  # facing right
+            else:
+                bird.center = (screen_x // 2 + 400, screen_y // 2)
+                bird.orientation = 180  # facing left
             bird.drop_ball()
         self.sprites.add(self.ball)
         self.ball.center = self.screen_rect.center
