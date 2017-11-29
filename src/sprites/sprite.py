@@ -24,7 +24,7 @@ class AbstractStaticSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
         """
         Initialises a sprite
 
-        Must call this before any other initialisation
+        Must call this before adding the sprite to a group
         """
         super().__init__()
         self.config = config
@@ -43,6 +43,11 @@ class AbstractStaticSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
 class AbstractPhysicsSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def __init__(self, config, image):
+        """
+        Initialises a sprite
+
+        Must call this before adding the sprite to a group
+        """
         super().__init__()
         self.config = config
         self.image = image
