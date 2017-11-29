@@ -159,32 +159,37 @@ class GameView(AbstractView):
             bird.turn(-self.config['bird_rotation_speed'])
 
         if pressed[bird.keybind.accelerate]:
-            bird.acceleration = Vector2(self.config['accel'], 0)
+            if bird.has_ball:
+                bird.acceleration = Vector2(self.config['accel_ball'], 0)
+            else:
+                bird.acceleration = Vector2(self.config['accel'], 0)
 
-            # boost handling
-            if pressed[bird.keybind.boost]:
-                bird.acceleration = bird.acceleration.lerp(Vector2(self.config['accel'] / self.config['boost_slowdown']),
-                                                           bird.boost_time / self.config['boost_time_required'])
-                bird.boost_time = min(bird.boost_time + 1, self.config['boost_time_required'])
-            elif bird.boost_time > 0:
-                speed = self.config['ball_launch_speed'] if bird.has_ball else self.config['boost_speed']
-                launchv = Vector2(0, 0).lerp(Vector2(speed, 0),
-                                                bird.boost_time / self.config['boost_time_required'])
-                launchv.rotate_ip(-bird.orientation)
-                if bird.has_ball:
-                    # launch the ball
-                    self.ball.velocity = launchv
-                    self.ball.center = bird.center
-                    self.sprites.add(self.ball)
-
-                    bird.drop_ball()
-                else:
-                    # launch the bird
-                    bird.velocity += launchv
-                bird.boost_time = 0
             bird.acceleration.rotate_ip(-bird.orientation)
         else:
             # gravity
             bird.acceleration = Vector2(0, self.config['accel'])
+
+        if pressed[bird.keybind.boost]:
+            if pressed[bird.keybind.accelerate]:
+                bird.acceleration = bird.acceleration.lerp(Vector2(self.config['accel'] / self.config['boost_slowdown']).rotate(-bird.orientation),
+                                                           bird.boost_time / self.config['boost_time_required'])
+            bird.boost_time = min(bird.boost_time + 1, self.config['boost_time_required'])
+        elif bird.boost_time > 0:
+            speed = self.config['ball_launch_speed'] if bird.has_ball else self.config['boost_speed']
+            launchv = Vector2(0, 0).lerp(Vector2(speed, 0),
+                                         bird.boost_time / self.config['boost_time_required'])
+            launchv.rotate_ip(-bird.orientation)
+            if bird.has_ball:
+                # launch the ball
+                self.ball.velocity = launchv
+                self.ball.center = bird.center
+                self.sprites.add(self.ball)
+
+                bird.drop_ball()
+            else:
+                # launch the bird
+                bird.velocity += launchv
+            bird.boost_time = 0
+
         # drag
         bird.acceleration -= self.config['bird_drag'] * bird.velocity

@@ -20,6 +20,7 @@
 	// all speeds/accelerations in terms of pixels per frame
 	"speed": 6,
 	"accel": 0.25,
+	"accel_ball": 0.18,
 	"bird_size": 20,
 	"ball_size": 20,
 	// arbitrary drag coefficients
