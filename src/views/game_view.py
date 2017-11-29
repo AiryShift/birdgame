@@ -44,6 +44,7 @@ class GameView(AbstractView):
         sprites = pg.sprite.Group(self.ball, *self.birds, *self.goals, self.scoreboard)
 
         self.score = {team: 0 for team in Team}
+        self.last_winning_team = None
         super().__init__('game', config, screen, clock, sprites)
 
     def _init_constants(self):
@@ -70,8 +71,11 @@ class GameView(AbstractView):
         self.ball.center = self.screen_rect.center
         self.ball.acceleration = Vector2(self.acceleration_from_gravity)
 
-        # TODO: proper initial launching
-        self.ball.velocity = Vector2(5).rotate(random.randrange(0, 360))
+        self.ball.velocity = Vector2(0, -self.config['ball_kickoff_speed']) # launch up
+        if self.last_winning_team is Team.LEFT:
+            self.ball.velocity += Vector2(self.config['ball_kickoff_speed'])  # launch right
+        elif self.last_winning_team is Team.RIGHT:
+            self.ball.velocity += Vector2(-self.config['ball_kickoff_speed'])  # launch left
 
     def _reset(self):
         screen_x, screen_y = self.config['size']
@@ -85,6 +89,7 @@ class GameView(AbstractView):
         self.scoreboard.rect.clamp_ip(self.screen_rect)
 
         self.score = {team: 0 for team in Team}
+        self.last_winning_team = None
         self.scoreboard.score = self.score
         self._soft_reset()
 
@@ -151,6 +156,7 @@ class GameView(AbstractView):
                 if goal.rect.contains(ball_rect):
                     # score for the team that owns the goalposts
                     self.score[goal.team] += 1
+                    self.last_winning_team = goal.team
                     self.scoreboard.score = self.score
                     self._soft_reset()
                     break
