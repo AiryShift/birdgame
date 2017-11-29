@@ -23,12 +23,12 @@ Keybinding = namedtuple('Keybinding', ['rotate_anti', 'rotate_clock', 'accelerat
 
 class Bird(AbstractPhysicsSprite):
     def __init__(self, config, color, keybind, team):
-        size = config['bird_size']
-        image = pg.Surface([size, size], pg.SRCALPHA)
+        # we define this knowing it's done in the base class so that we can use _init_image
+        self.config = config
+        self._color = self._original_color = color
+        image = self._init_image(self._color)
         super().__init__(config, image)
 
-        self._color = self._original_color = color
-        self.image.fill(self._color)
         self.keybind = keybind
         self.team = team
         # orientation in degrees, 0 east, positive anticlockwise
@@ -37,10 +37,16 @@ class Bird(AbstractPhysicsSprite):
         self.boost_time = 0
 
         # used for rotations
-        self._original_image = self.image
+        self._unrotated_image = self.image
+
+    def _init_image(self, color):
+        size = self.config['bird_size']
+        image = pg.Surface([size, size], pg.SRCALPHA)
+        image.fill(color)
+        return image
 
     def _rotate_image(self):
-        self.image = pg.transform.rotate(self._original_image, self.orientation)
+        self.image = pg.transform.rotate(self._unrotated_image, self.orientation)
         # rect needs to be readjusted to maintain original position
         self.rect = self.image.get_rect(center=self.center)
 
@@ -52,12 +58,6 @@ class Bird(AbstractPhysicsSprite):
         self.color = self._original_color
         self.has_ball = False
 
-    def _init_image(self, color):
-        size = self.config['bird_size']
-        image = pg.Surface([size, size], pg.SRCALPHA)
-        image.fill(color)
-        return image
-
     @property
     def color(self):
         return self._color
@@ -65,7 +65,7 @@ class Bird(AbstractPhysicsSprite):
     @color.setter
     def color(self, value):
         self._color = value
-        self._original_image = self._init_image(self._color)
+        self._unrotated_image = self._init_image(self._color)
         self._rotate_image()
 
     @property
