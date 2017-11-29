@@ -39,10 +39,6 @@ class Bird(AbstractPhysicsSprite):
         # used for rotations
         self._original_image = self.image
 
-    def turn(self, rotation):
-        self.orientation += rotation
-        self._rotate_image()
-
     def _rotate_image(self):
         self.image = pg.transform.rotate(self._original_image, self.orientation)
         # rect needs to be readjusted to maintain original position
@@ -86,3 +82,4 @@ class Bird(AbstractPhysicsSprite):
         elif self._orientation < 0:
             while self._orientation < 0:
                 self._orientation += 360
+        self._rotate_image()

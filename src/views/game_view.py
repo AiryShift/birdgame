@@ -154,9 +154,9 @@ class GameView(AbstractView):
 
     def _handle_bird_keypresses(self, pressed, bird):
         if pressed[bird.keybind.rotate_anti]:
-            bird.turn(self.config['bird_rotation_speed'])
+            bird.orientation += self.config['bird_rotation_speed']
         if pressed[bird.keybind.rotate_clock]:
-            bird.turn(-self.config['bird_rotation_speed'])
+            bird.orientation -= self.config['bird_rotation_speed']
 
         if pressed[bird.keybind.accelerate]:
             if bird.has_ball:
