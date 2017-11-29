@@ -46,8 +46,8 @@ class AbstractPhysicsSprite(pg.sprite.Sprite, metaclass=abc.ABCMeta):
         super().__init__()
         self.config = config
         self.image = image
-        self.velocity = Vector2(0, 0)
-        self.acceleration = Vector2(0, 0)
+        self.velocity = Vector2()
+        self.acceleration = Vector2()
         self.invulnerability = 0
 
         # interact with this position vector instead of rect for accuracy

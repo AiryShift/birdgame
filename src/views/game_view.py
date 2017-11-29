@@ -65,7 +65,7 @@ class GameView(AbstractView):
         self.ball.acceleration = Vector2(self.acceleration_from_gravity)
 
         # TODO: proper initial launching
-        self.ball.velocity = Vector2(5, 0).rotate(random.randrange(0, 360))
+        self.ball.velocity = Vector2(5).rotate(random.randrange(0, 360))
 
     def _reset(self):
         screen_x, screen_y = self.config['size']
@@ -129,7 +129,7 @@ class GameView(AbstractView):
                     if thief is not victim and pg.sprite.collide_rect(thief, victim):
                         victim.drop_ball()
                         # knock the victim around
-                        victim.velocity += Vector2(self.config['boost_speed'], 0).rotate(random.randrange(0, 360))
+                        victim.velocity += Vector2(self.config['boost_speed']).rotate(random.randrange(0, 360))
                         thief.take_ball(self.ball_stolen_color)
                         thief.invulnerability += self.config['thief_invuln_time']
                         break
@@ -160,9 +160,9 @@ class GameView(AbstractView):
 
         if pressed[bird.keybind.accelerate]:
             if bird.has_ball:
-                bird.acceleration = Vector2(self.config['accel_ball'], 0)
+                bird.acceleration = Vector2(self.config['accel_ball'])
             else:
-                bird.acceleration = Vector2(self.config['accel'], 0)
+                bird.acceleration = Vector2(self.config['accel'])
 
             bird.acceleration.rotate_ip(-bird.orientation)
         else:
@@ -176,7 +176,7 @@ class GameView(AbstractView):
             bird.boost_time = min(bird.boost_time + 1, self.config['boost_time_required'])
         elif bird.boost_time > 0:
             speed = self.config['ball_launch_speed'] if bird.has_ball else self.config['boost_speed']
-            launchv = Vector2(0, 0).lerp(Vector2(speed, 0),
+            launchv = Vector2().lerp(Vector2(speed),
                                          bird.boost_time / self.config['boost_time_required'])
             launchv.rotate_ip(-bird.orientation)
             if bird.has_ball:
